@@ -1,0 +1,92 @@
+﻿@page "/newscategory/create"
+@page "/newscategory/edit/{Id:int}"
+@inject INewsCategoryRepository NewsCategoryRepository
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@attribute [Authorize(Roles = SD.Role_Admin)]
+
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title Category</h3>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <EditForm Model="NewsCategoryModel" OnValidSubmit="HandleNewsCategoryUpsert">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText @bind-Value="NewsCategoryModel.Name" class="form-control"></InputText>
+                        <ValidationMessage For="()=>NewsCategoryModel.Name"></ValidationMessage>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary">@Title Category</button>
+                        <NavLink href="newscategory" class="btn btn-secondary">Back to Index</NavLink>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private NewsCategoryDTO NewsCategoryModel { get; set; } = new NewsCategoryDTO();
+    private string Title { get; set; } = "Create";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            //Updating
+            Title = "Update";
+            NewsCategoryModel = await NewsCategoryRepository.GetNewsCategory(Id.Value);
+
+
+        }
+        else
+        {
+            //Create
+            NewsCategoryModel = new NewsCategoryDTO();
+        }
+    }
+
+
+    private async Task HandleNewsCategoryUpsert()
+    {
+
+        try
+        {
+
+            if (NewsCategoryModel.Id != 0 && Title == "Update")
+            {
+
+                //Update
+                var updateAmenityResult = await NewsCategoryRepository.UpdateNewsCategory(NewsCategoryModel.Id, NewsCategoryModel);
+
+                await JsRuntime.ToastrSuccess("News Category updated successfully.");
+            }
+            else
+            {
+                //Create
+                var createdResult = await NewsCategoryRepository.CreateNewsCategory(NewsCategoryModel);
+                await JsRuntime.ToastrSuccess("News Category created successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            //log exceptions
+            throw;
+        }
+
+
+
+        NavigationManager.NavigateTo("newscategory");
+    }
+}

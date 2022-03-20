@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wlog_Server", "Wlog_Server\Wlog_Server.csproj", "{A5790F39-8B24-4B22-BA6E-09194D7A4AFA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{F9D254F7-6427-4A1E-9405-DEA93864D948}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{042972BF-263F-4A14-8737-162552B2EA17}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{4801B6AE-B00E-4556-9BF0-1D43EFEDEEFE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{ACA902FA-EE6F-4D58-BD46-9612F5B1D07E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wlog_Client", "Wlog_Client\Wlog_Client.csproj", "{D1BBFEEE-168E-42FF-81D8-C0BD45F4E289}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wlog_Api", "Wlog_Api\Wlog_Api.csproj", "{995D9B90-626B-47A0-9224-96059E70D9BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5790F39-8B24-4B22-BA6E-09194D7A4AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5790F39-8B24-4B22-BA6E-09194D7A4AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5790F39-8B24-4B22-BA6E-09194D7A4AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5790F39-8B24-4B22-BA6E-09194D7A4AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D254F7-6427-4A1E-9405-DEA93864D948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D254F7-6427-4A1E-9405-DEA93864D948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D254F7-6427-4A1E-9405-DEA93864D948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D254F7-6427-4A1E-9405-DEA93864D948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042972BF-263F-4A14-8737-162552B2EA17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042972BF-263F-4A14-8737-162552B2EA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042972BF-263F-4A14-8737-162552B2EA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042972BF-263F-4A14-8737-162552B2EA17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4801B6AE-B00E-4556-9BF0-1D43EFEDEEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4801B6AE-B00E-4556-9BF0-1D43EFEDEEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4801B6AE-B00E-4556-9BF0-1D43EFEDEEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4801B6AE-B00E-4556-9BF0-1D43EFEDEEFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA902FA-EE6F-4D58-BD46-9612F5B1D07E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA902FA-EE6F-4D58-BD46-9612F5B1D07E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA902FA-EE6F-4D58-BD46-9612F5B1D07E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA902FA-EE6F-4D58-BD46-9612F5B1D07E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1BBFEEE-168E-42FF-81D8-C0BD45F4E289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1BBFEEE-168E-42FF-81D8-C0BD45F4E289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1BBFEEE-168E-42FF-81D8-C0BD45F4E289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1BBFEEE-168E-42FF-81D8-C0BD45F4E289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{995D9B90-626B-47A0-9224-96059E70D9BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{995D9B90-626B-47A0-9224-96059E70D9BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{995D9B90-626B-47A0-9224-96059E70D9BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{995D9B90-626B-47A0-9224-96059E70D9BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D7ED793-EBBB-4806-989D-41DDDF184BFC}
+	EndGlobalSection
+EndGlobal

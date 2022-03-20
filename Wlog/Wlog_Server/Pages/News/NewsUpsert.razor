@@ -1,0 +1,380 @@
+﻿@page "/news/create"
+@page "/news/edit/{Id:int}"
+@inject INewsRepository NewsRepository
+@inject INewsCategoryRepository NewsCategoryRepository
+@inject INewsSubCategoryRepository NewsSubCategoryRepository
+@inject INewsImagesRepository NewsImagesRepository
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@inject IFileUpload FileUpload
+@inject AppDbContext _db
+
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title News</h3>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <EditForm Model="NewsModel" OnValidSubmit="HandleNewsUpsert">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText @bind-Value="NewsModel.Title" class="form-control"></InputText>
+                        <ValidationMessage For="()=>NewsModel.Title"></ValidationMessage>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <InputSelect id="subcategoryId" @bind-Value="@NewsModel.CategoryId" class="form-control">
+                            @foreach (var item in NewsSubCategoryDTOs)
+                            {
+                                @foreach (var item2 in NewsCategoryDTOs.Where(x=>x.Id==item.NewsCategoryId))
+                                {
+                                    <option value="@item.Id">@item2.Name - @item.Name</option>
+                                }
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="()=>NewsModel.CategoryId"></ValidationMessage>
+                    </div>
+
+                <div class="form-group" style="height:250px;">
+                    <label>Content</label>
+
+                    <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Please enter news content">
+                        <ToolbarContent>
+                            <select class="ql-header">
+                                <option selected=""></option>
+                                <option value="1"></option>
+                                <option value="2"></option>
+                                <option value="3"></option>
+                                <option value="4"></option>
+                                <option value="5"></option>
+                            </select>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                            </span>
+                        </ToolbarContent>
+                        <EditorContent>
+
+                        </EditorContent>
+                    </BlazoredTextEditor>
+
+                </div>
+                    <div class="form-group" style="padding-top: 100px; padding-bottom: 20px;">
+                        <InputFile OnChange="HandleImageUpload" multiple></InputFile>
+                        <div class="row">
+                            @if (IsImageUploadProcessStarted)
+                            {
+                                <div class="col-md-12">
+                                    <span><i class="fa fa-spin fa-spinner"></i> Please wait.. Images are uploading...</span>
+                                </div>
+                            }
+                            @if (NewsModel.ImageUrls != null && NewsModel.ImageUrls.Count > 0)
+                            {
+                                int serial = 1;
+                                foreach (var roomImage in NewsModel.ImageUrls)
+                                {
+                                    <div class="col-md-2 mt-3">
+                                        <div class="room-image" style="background: url('@roomImage') 50% 50% ">
+                                            <span class="room-image-title">@serial</span>
+                                        </div>
+                                        <button type="button" @onclick="()=>DeletePhoto(roomImage)" class="btn btn-outline-danger btn-block mt-4"> Delete</button>
+                                    </div>
+
+                                    serial++;
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">@Title News</button>
+                        <NavLink href="news" class="btn btn-secondary">Back to Index</NavLink>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public int? Id { get; set; }
+    private NewsDTO NewsModel { get; set; } = new NewsDTO();
+    private string Title { get; set; } = "Create";
+    private NewsImageDTO NewsImage { get; set; } = new NewsImageDTO();
+    private List<string> DeletedImageNames { get; set; } = new List<string>();
+    public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
+    private IEnumerable<NewsSubCategoryDTO> NewsSubCategoryDTOs { get; set; } = new List<NewsSubCategoryDTO>();
+    private IEnumerable<NewsCategoryDTO> NewsCategoryDTOs { get; set; } = new List<NewsCategoryDTO>();
+    private IEnumerable<NewsDTO> NewsModels { get; set; } = new List<NewsDTO>();
+
+    private bool IsImageUploadProcessStarted { get; set; } = false;
+
+
+
+
+
+
+
+
+
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        NewsSubCategoryDTOs = await NewsSubCategoryRepository.GetAllNewsSubCategory();
+        NewsCategoryDTOs = await NewsCategoryRepository.GetAllNewsCategory();
+        NewsModels = await NewsRepository.GetAllNews();
+
+
+        var authenticationState = await AuthenticationState;
+        if (!authenticationState.User.IsInRole(SD.Role_Admin))
+        {
+            var uri = new Uri(NavigationManager.Uri);
+            NavigationManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}");
+        }
+
+        if (Id != null)
+        {
+            //Updating
+            Title = "Update";
+            NewsModel = await NewsRepository.GetNews(Id.Value);
+
+            if (NewsModel?.NewsImages != null)
+            {
+                NewsModel.ImageUrls = NewsModel.NewsImages.Select(u => u.NewsImageUrl).ToList();
+            }
+
+
+        }
+        else
+        {
+            //Create
+            NewsModel = new NewsDTO
+            {
+                CategoryId = _db.NewsSubCategories.FirstOrDefault().Id
+            };
+
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+        bool loading = true;
+        while (loading)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(NewsModel.Details))
+                {
+                    await this.QuillHtml.LoadHTMLContent(NewsModel.Details);
+                }
+                loading = false;
+            }
+            catch (Exception)
+            {
+                await Task.Delay(10);
+                loading = true;
+            }
+
+        }
+
+    }
+
+
+    private async Task HandleNewsUpsert()
+    {
+
+        try
+        {
+            //var newsDetailsByName = await NewsRepository.IsNewsUnique(NewsModel.Title, NewsModel.Id);
+            //if (newsDetailsByName != null)
+            //{
+            //    await JsRuntime.ToastrError("News name already exists.");
+            //    return;
+            //}
+
+            if (NewsModel.Id != 0 && Title == "Update")
+            {
+                NewsModel.Details = await QuillHtml.GetHTML();
+                //Update
+                var updateNewsResult = await NewsRepository.UpdateNews(NewsModel.Id, NewsModel);
+                if ((NewsModel.ImageUrls != null && NewsModel.ImageUrls.Any())
+                    || (DeletedImageNames != null && DeletedImageNames.Any())
+                    )
+                {
+                    if (DeletedImageNames != null && DeletedImageNames.Any())
+                    {
+                        foreach (var deletedImageName in DeletedImageNames)
+                        {
+                            var imageName = deletedImageName.Replace($"{NavigationManager.BaseUri}WlogImages/", "");
+
+                            var result = FileUpload.DeleteFile(imageName);
+                            await NewsImagesRepository.DeleteNewsImageByUrl(deletedImageName);
+                        }
+                    }
+
+
+
+                    await AddNewsImage(updateNewsResult);
+                }
+                await JsRuntime.ToastrSuccess("News updated successfully.");
+            }
+            else
+            {
+
+                //Create
+                NewsModel.Details = await QuillHtml.GetHTML();
+
+
+                var createdResult = await NewsRepository.CreateNews(NewsModel);
+                await AddNewsImage(createdResult);
+                await JsRuntime.ToastrSuccess("News created successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            //log exceptions
+            throw;
+        }
+
+
+
+        NavigationManager.NavigateTo("news");
+    }
+
+    public void SetHtml()
+    {
+        if (!string.IsNullOrEmpty(NewsModel.Details))
+        {
+            this.QuillHtml.LoadHTMLContent(NewsModel.Details);
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task HandleImageUpload(InputFileChangeEventArgs e)
+    {
+        IsImageUploadProcessStarted = true;
+
+        try
+        {
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Count > 0)
+            {
+                foreach (var file in e.GetMultipleFiles())
+                {
+                    System.IO.FileInfo fileInfo = new System.IO.FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" ||
+                        fileInfo.Extension.ToLower() == ".png" ||
+                        fileInfo.Extension.ToLower() == ".jpeg")
+                    {
+                        var uploadedImagePath = await FileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
+                    }
+                    else
+                    {
+                        await JsRuntime.ToastrError("Please select .jpg/ .jpeg/ .png file only");
+                        return;
+                    }
+                }
+
+                if (images.Any())
+                {
+                    if (NewsModel.ImageUrls != null && NewsModel.ImageUrls.Any())
+                    {
+                        NewsModel.ImageUrls.AddRange(images);
+                    }
+                    else
+                    {
+                        NewsModel.ImageUrls = new List<string>();
+                        NewsModel.ImageUrls.AddRange(images);
+                    }
+                }
+                else
+                {
+                    await JsRuntime.ToastrError("Image uploading failed");
+                    return;
+                }
+
+            }
+
+
+            IsImageUploadProcessStarted = false;
+        }
+        catch (Exception ex)
+        {
+
+            await JsRuntime.ToastrError(ex.Message);
+        }
+
+    }
+
+
+    private async Task AddNewsImage(NewsDTO newsDetails)
+    {
+        foreach (var imageUrl in NewsModel.ImageUrls)
+        {
+            if (NewsModel.NewsImages == null || NewsModel.NewsImages.Where(x => x.NewsImageUrl == imageUrl).Count() == 0)
+            {
+                NewsImage = new NewsImageDTO()
+                {
+                    NewsId = newsDetails.Id,
+                    NewsImageUrl = imageUrl,
+                };
+                await NewsImagesRepository.CreateNewsImage(NewsImage);
+            }
+
+        }
+    }
+
+
+    internal async Task DeletePhoto(string imageUrl)
+    {
+        try
+        {
+            var imageIndex = NewsModel.ImageUrls.FindIndex(x => x == imageUrl);
+            var imageName = imageUrl.Replace($"{NavigationManager.BaseUri}WlogImages/", "");
+            if (NewsModel.Id == 0 && Title == "Create")
+            {
+                var result = FileUpload.DeleteFile(imageName);
+            }
+            else
+            {
+                //Update
+                DeletedImageNames ??= new List<string>();
+                DeletedImageNames.Add(imageUrl);
+            }
+
+            NewsModel.ImageUrls.RemoveAt(imageIndex);
+        }
+        catch (Exception ex)
+        {
+
+            await JsRuntime.ToastrError(ex.Message);
+        }
+    }
+
+}

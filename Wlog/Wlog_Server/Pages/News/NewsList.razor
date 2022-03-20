@@ -1,0 +1,103 @@
+﻿@page "/news"
+@inject INewsRepository NewsRepository
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@inject IFileUpload FileUpload
+@attribute [Authorize(Roles = SD.Role_Admin)]
+
+<div class="row mt-4">
+    <div class="col-8">
+        <h4 class="card-title text-info">News</h4>
+        <NavLink href="newscategory" class="btn btn-info">Category</NavLink>
+        <NavLink href="newssubcategory" class="btn btn-info">Sub Category</NavLink>
+    </div>
+    <div class="col-3 offset-1">
+        <NavLink href="news/create" class="btn btn-info form-control">Add New</NavLink>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Category</th>
+                    <th>SubCategory</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (NewsModels.Any())
+                {
+                    foreach (var news in NewsModels)
+                    {
+                        <tr>
+                            <td>@news.Title</td>
+                            <td>@((MarkupString)news.Details)</td>
+                            <td>@news.Category.NewsCategory.Name</td>
+                            <td>@news.Category.Name</td>
+                            <td>
+                                <NavLink href="@($"news/edit/{news.Id}")" class="btn btn-primary">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="()=>HandleDelete(news.Id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">No records found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
+
+@code {
+    private IEnumerable<NewsDTO> NewsModels { get; set; } = new List<NewsDTO>();
+    private int? DeleteNewsId { get; set; } = null;
+    private bool IsProcessing { get; set; } = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewsModels = await NewsRepository.GetAllNews();
+    }
+
+
+
+    private async Task HandleDelete(int newsId)
+    {
+        DeleteNewsId = newsId;
+        await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+
+        if (isConfirmed && DeleteNewsId != null)
+        {
+            NewsDTO news = await NewsRepository.GetNews(DeleteNewsId.Value);
+            foreach (var image in news.NewsImages)
+            {
+                var imageName = image.NewsImageUrl.Replace($"{NavigationManager.BaseUri}WlogImages/", "");
+                FileUpload.DeleteFile(imageName);
+            }
+
+            await NewsRepository.DeleteNews(DeleteNewsId.Value);
+            await JsRuntime.ToastrSuccess("News Deleted successfully");
+            NewsModels = await NewsRepository.GetAllNews();
+        }
+        await JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+
+        IsProcessing = false;
+    }
+
+}

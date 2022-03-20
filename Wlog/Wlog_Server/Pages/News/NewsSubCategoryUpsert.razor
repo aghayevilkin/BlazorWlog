@@ -1,0 +1,123 @@
+﻿@page "/newssubcategory/create"
+@page "/newssubcategory/edit/{Id:int}"
+@inject INewsSubCategoryRepository NewsSubCategoryRepository
+@inject INewsCategoryRepository NewsCategoryRepository
+@inject NavigationManager NavigationManager
+@inject AppDbContext _db
+@inject IJSRuntime JsRuntime
+@attribute [Authorize(Roles = SD.Role_Admin)]
+
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title Sub Category</h3>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <EditForm Model="NewsSubCategoryModel" OnValidSubmit="HandleNewsCategoryUpsert">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText @bind-Value="NewsSubCategoryModel.Name" class="form-control"></InputText>
+                        <ValidationMessage For="()=>NewsSubCategoryModel.Name"></ValidationMessage>
+                    </div>
+
+                    @*<div class="form-group">
+                        <label>Category</label>
+                        <InputSelect id="categoryId" @bind-Value="NewsSubCategoryModel.NewsCategoryId" class="form-control">
+                            @foreach (var item in NewsCategoryDTOs)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="()=>NewsSubCategoryModel.NewsCategoryId"></ValidationMessage>
+                    </div>*@
+                    <div class="form-group">
+                        <label>Category</label>
+                        <CustomInputSelect id="categoryId" @bind-Value="NewsSubCategoryModel.NewsCategoryId" class="form-control">
+                            @foreach (var item in NewsCategoryDTOs)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </CustomInputSelect>
+                        <ValidationMessage For="()=>NewsSubCategoryModel.NewsCategoryId"></ValidationMessage>
+                    </div>
+
+
+                    <div class="form-group">
+                        <button class="btn btn-primary">@Title Category</button>
+                        <NavLink href="newssubcategory" class="btn btn-secondary">Back to Index</NavLink>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private NewsSubCategoryDTO NewsSubCategoryModel { get; set; } = new NewsSubCategoryDTO();
+    private IEnumerable<NewsCategoryDTO> NewsCategoryDTOs { get; set; } = new List<NewsCategoryDTO>();
+    private string Title { get; set; } = "Create";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewsCategoryDTOs = await NewsCategoryRepository.GetAllNewsCategory();
+
+
+        if (Id != null)
+        {
+            //Updating
+            Title = "Update";
+            NewsSubCategoryModel = await NewsSubCategoryRepository.GetNewsSubCategory(Id.Value);
+
+
+        }
+        else
+        {
+            //Create
+            NewsSubCategoryModel = new NewsSubCategoryDTO
+            {
+                NewsCategoryId = _db.NewsCategories.FirstOrDefault().Id
+            };
+        };
+    }
+
+
+    private async Task HandleNewsCategoryUpsert()
+    {
+
+        try
+        {
+
+            if (NewsSubCategoryModel.Id != 0 && Title == "Update")
+            {
+
+                //Update
+                var updateAmenityResult = await NewsSubCategoryRepository.UpdateNewsSubCategory(NewsSubCategoryModel.Id, NewsSubCategoryModel);
+
+                await JsRuntime.ToastrSuccess("Category updated successfully.");
+            }
+            else
+            {
+                //Create
+                var createdResult = await NewsSubCategoryRepository.CreateNewsSubCategory(NewsSubCategoryModel);
+                await JsRuntime.ToastrSuccess("Category created successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            //log exceptions
+            throw;
+        }
+
+
+
+        NavigationManager.NavigateTo("newssubcategory");
+    }
+}

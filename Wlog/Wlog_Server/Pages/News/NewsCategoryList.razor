@@ -1,0 +1,91 @@
+﻿@page "/newscategory"
+@inject INewsCategoryRepository NewsCategoryRepository
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@attribute [Authorize(Roles = SD.Role_Admin)]
+
+
+
+<div class="row mt-4">
+    <div class="col-8">
+        <h4 class="card-title text-info">Category</h4>
+        <NavLink href="news" class="btn btn-info">News</NavLink>
+    </div>
+    <div class="col-3 offset-1">
+        <NavLink href="newscategory/create" class="btn btn-info form-control">Add Category</NavLink>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (NewsCategories.Any())
+                {
+                    foreach (var item in NewsCategories)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                <NavLink href="@($"newscategory/edit/{item.Id}")" class="btn btn-primary">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="()=>HandleDelete(item.Id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">No records found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
+
+
+
+@code {
+    private IEnumerable<NewsCategoryDTO> NewsCategories { get; set; } = new List<NewsCategoryDTO>();
+    private int? DeleteCategoryId { get; set; } = null;
+    private bool IsProcessing { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewsCategories = await NewsCategoryRepository.GetAllNewsCategory();
+    }
+
+
+    private async Task HandleDelete(int categoryId)
+    {
+        DeleteCategoryId = categoryId;
+        await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+
+        if (isConfirmed && DeleteCategoryId != null)
+        {
+            NewsCategoryDTO newsCategory = await NewsCategoryRepository.GetNewsCategory(DeleteCategoryId.Value);
+
+            await NewsCategoryRepository.DeleteNewsCategory(DeleteCategoryId.Value);
+            await JsRuntime.ToastrSuccess("Category Deleted successfully");
+            NewsCategories = await NewsCategoryRepository.GetAllNewsCategory();
+        }
+        await JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+
+        IsProcessing = false;
+    }
+}
