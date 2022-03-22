@@ -177,6 +177,13 @@ using Microsoft.AspNetCore.Identity;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 25 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\_Imports.razor"
+using MudBlazor;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/news/create")]
     [Microsoft.AspNetCore.Components.RouteAttribute("/news/edit/{Id:int}")]
     public partial class NewsUpsert : Microsoft.AspNetCore.Components.ComponentBase

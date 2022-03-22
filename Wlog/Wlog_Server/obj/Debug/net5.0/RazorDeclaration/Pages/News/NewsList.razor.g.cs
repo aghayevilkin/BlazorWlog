@@ -181,6 +181,13 @@ using Microsoft.AspNetCore.Identity;
 #line hidden
 #nullable disable
 #nullable restore
+#line 25 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\_Imports.razor"
+using MudBlazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 6 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsList.razor"
            [Authorize(Roles = SD.Role_Admin)]
 
@@ -196,8 +203,28 @@ using Microsoft.AspNetCore.Identity;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 61 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsList.razor"
+#line 69 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsList.razor"
        
+
+
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private string searchString1 = "";
+    private NewsDTO selectedItem1 = null;
+    private HashSet<NewsDTO> selectedItems = new HashSet<NewsDTO>();
+
+
+    //Carousel------------------------------------------
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+
+    //---------------------------------------------------
+
     private IEnumerable<NewsDTO> NewsModels { get; set; } = new List<NewsDTO>();
     private int? DeleteNewsId { get; set; } = null;
     private bool IsProcessing { get; set; } = false;
@@ -207,6 +234,34 @@ using Microsoft.AspNetCore.Identity;
     {
         NewsModels = await NewsRepository.GetAllNews();
     }
+
+
+
+    private bool FilterFunc1(NewsDTO element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(NewsDTO element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Category.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Category.NewsCategory.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 

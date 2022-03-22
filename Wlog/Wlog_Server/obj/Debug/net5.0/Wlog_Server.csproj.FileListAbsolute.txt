@@ -268,3 +268,8 @@ C:\Users\ASUS\source\repos\Wlog\Wlog_Server\obj\Debug\net5.0\RazorDeclaration\Pa
 C:\Users\ASUS\source\repos\Wlog\Wlog_Server\obj\Debug\net5.0\Razor\Pages\News\NewsSubCategoryList.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Server\obj\Debug\net5.0\RazorDeclaration\Pages\News\NewsSubCategoryUpsert.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Server\obj\Debug\net5.0\Razor\Pages\News\NewsSubCategoryUpsert.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Server\bin\Debug\net5.0\Microsoft.AspNetCore.Components.Forms.dll
+C:\Users\ASUS\source\repos\Wlog\Wlog_Server\bin\Debug\net5.0\Microsoft.AspNetCore.Components.Web.dll
+C:\Users\ASUS\source\repos\Wlog\Wlog_Server\bin\Debug\net5.0\Microsoft.JSInterop.dll
+C:\Users\ASUS\source\repos\Wlog\Wlog_Server\bin\Debug\net5.0\MudBlazor.dll
+C:\Users\ASUS\source\repos\Wlog\Wlog_Server\bin\Debug\net5.0\System.IO.Pipelines.dll

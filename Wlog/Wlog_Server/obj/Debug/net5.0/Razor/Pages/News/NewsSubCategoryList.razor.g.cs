@@ -178,6 +178,13 @@ using Microsoft.AspNetCore.Identity;
 #line hidden
 #nullable disable
 #nullable restore
+#line 25 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\_Imports.razor"
+using MudBlazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 6 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsSubCategoryList.razor"
            [Authorize(Roles = SD.Role_Admin)]
 

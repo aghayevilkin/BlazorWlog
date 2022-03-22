@@ -180,6 +180,13 @@ using Microsoft.AspNetCore.Identity;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 25 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\_Imports.razor"
+using MudBlazor;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -187,21 +194,6 @@ using Microsoft.AspNetCore.Identity;
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 45 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Shared\NavMenu.razor"
-       
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
-#line default
-#line hidden
-#nullable disable
     }
 }
 #pragma warning restore 1591

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MudBlazor.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,9 @@ namespace Wlog_Server
             services.AddScoped<INewsImagesRepository, NewsImagesRepository>();
             services.AddScoped<IFileUpload, FileUpload>();
             services.AddScoped<IDbInitializer, DbInitializer>();
+
+
+            services.AddMudServices();
 
 
             services.AddHttpContextAccessor();
