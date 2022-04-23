@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "L/vdQ2Hty3kWlqdp8ZoA6j/1no9ULGH8QBPLAHaFBr6pPnCfIBpmbgtqGpqVxyzO9jxXaKSqItRcTzP3Km6o0Q==",
+  "dgSpecHash": "XFItyN4Uf6gm5PoFXUUSydW7Ik7qzM9oc1Fepy8aU0nvaxF7gE+ojd9uHw53DWiDEc5xfIEziOaygygpkoiZnQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ASUS\\source\\repos\\Wlog\\Wlog_Server\\Wlog_Server.csproj",
   "expectedPackageFiles": [
@@ -21,6 +21,8 @@
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\5.0.0-rc.1.20451.17\\microsoft.aspnetcore.dataprotection.5.0.0-rc.1.20451.17.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.dataprotection.abstractions\\5.0.0-rc.1.20451.17\\microsoft.aspnetcore.dataprotection.abstractions.5.0.0-rc.1.20451.17.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.12\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.12.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\5.0.12\\microsoft.aspnetcore.identity.ui.5.0.12.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.metadata\\5.0.12\\microsoft.aspnetcore.metadata.5.0.12.nupkg.sha512",

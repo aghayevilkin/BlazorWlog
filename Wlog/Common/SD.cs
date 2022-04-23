@@ -13,5 +13,11 @@ namespace Common
         public const string Role_Customer = "Customer";
         public const string Role_Employee = "Employee";
 
+        public const string Local_InitialNews = "InitialNewsInfo";
+        public const string Local_NewsDetails = "NewsDetails";
+
+        public const string Local_Token = "Jwt Token";
+        public const string Local_UserDetails = "User Details";
+
     }
 }

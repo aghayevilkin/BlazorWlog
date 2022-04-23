@@ -1,0 +1,76 @@
+﻿.loading {
+    position: fixed !important;
+    background-color: #008acb;
+    text-align: center;
+}
+
+.loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5000
+}
+
+    .loading .loader-gif {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -64px;
+        margin-left: -64px;
+    }
+
+.spinner7 {
+    width: 90px;
+    height: 30px;
+    text-align: center;
+}
+
+    .spinner7 > div {
+        background-color: #fff;
+        height: 15px;
+        width: 15px;
+        margin-left: 3px;
+        border-radius: 50%;
+        display: inline-block;
+        -webkit-animation: stretchdelay .7s infinite ease-in-out;
+        animation: stretchdelay .7s infinite ease-in-out;
+    }
+
+    .spinner7 .circ2 {
+        -webkit-animation-delay: -0.6s;
+        animation-delay: -0.6s;
+    }
+
+    .spinner7 .circ3 {
+        -webkit-animation-delay: -0.5s;
+        animation-delay: -0.5s;
+    }
+
+    .spinner7 .circ4 {
+        -webkit-animation-delay: -0.4s;
+        animation-delay: -0.4s;
+    }
+
+@-webkit-keyframes stretchdelay {
+    0%, 40%, 100% {
+        -webkit-transform: translateY(-10px)
+    }
+
+    20% {
+        -webkit-transform: translateY(-20px)
+    }
+}
+
+@keyframes stretchdelay {
+    0%, 40%, 100% {
+        transform: translateY(-10px);
+        -webkit-transform: translateY(-10px)
+    }
+
+    20% {
+        transform: translateY(-20px);
+        -webkit-transform: translateY(-20px)
+    }
+}

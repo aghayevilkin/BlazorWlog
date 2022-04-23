@@ -2,12 +2,14 @@
 using Business.Repository.IRepository;
 using DataAccess.Data;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,27 +20,23 @@ namespace Business.Repository
 
         private readonly AppDbContext _db;
         private readonly IMapper _mapper;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public NewsRepository(AppDbContext db, IMapper mapper, UserManager<IdentityUser> userManager, AuthenticationStateProvider GetAuthenticationStateAsync)
+        public NewsRepository(AppDbContext db, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _mapper = mapper;
-            _userManager = userManager;
-            _getAuthenticationStateAsync = GetAuthenticationStateAsync;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<NewsDTO> CreateNews(NewsDTO newsDTO)
         {
-            //Get User
-            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
-            var user = authstate.User;
-            var userId = await _userManager.GetUserAsync(user);
+
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             News news = _mapper.Map<NewsDTO, News>(newsDTO);
             news.AddedDate = DateTime.Now;
-            news.UserId = userId.Id;
+            news.UserId = userId;
             news.NewsStatus = NewsStatus.Active;
             var addedNews = await _db.News.AddAsync(news);
 

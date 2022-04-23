@@ -1,6 +1,8 @@
 {
   "cacheBootResources": true,
-  "config": [ ],
+  "config": [
+    "appsettings.json"
+  ],
   "debugBuild": true,
   "entryAssembly": "Wlog_Client",
   "icuDataMode": 0,
@@ -18,6 +20,8 @@
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-QsNziIE1fqEkctuuGPf+3m0MbOtwlF2DwxTJZ4daFFc=",
       "Microsoft.AspNetCore.Cryptography.Internal.dll": "sha256-TXthjRiXiidp1PNqjoMNl6n3mKFHM+dtJKL9+I2lWwo=",
       "Microsoft.AspNetCore.Cryptography.KeyDerivation.dll": "sha256-y6o5aArwx50tQDMpmlpbGLSu9tlhOUR1j3uXjmWfBZ4=",
+      "Microsoft.AspNetCore.Http.Abstractions.dll": "sha256-qFKmKNr9iAZiZxOVvLJBfMhkKfDy1GvY81fHh1hiphU=",
+      "Microsoft.AspNetCore.Http.Features.dll": "sha256-J2xQUZ4BD6tsrQkvGS5HDQfkTGMzmaS76TA9nJrtCpg=",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": "sha256-Qc04PzV1RIBZVC67\/NF9GdbofCCh7+y\/8sLkulIob6o=",
       "Microsoft.AspNetCore.Metadata.dll": "sha256-aNxhP+jeasQLwzuvRzMwQ4DqOtk2QaSs0lY4h\/WtLeM=",
       "Microsoft.Data.SqlClient.dll": "sha256-b3VthT+G+1PEq1MmOISwOC8nsYR60+3otiX74sQDynQ=",
@@ -226,19 +230,19 @@
       "mscorlib.dll": "sha256-0qsbc1acYr3S6P7t9gSYyghOhMVs3CTJ9ukQ1VXqksY=",
       "netstandard.dll": "sha256-4Ejn1oHpeqmTQlJx7Kjuipn0ZVOoG0hGncN+9qyL1lo=",
       "System.Private.CoreLib.dll": "sha256-7n\/jioZu+\/2tD7v1RgjTTrBrviX+kVwPFGJ\/JBsHQGA=",
-      "Business.dll": "sha256-KoysFnSJ7oramMPDT01eEwjmDumieNAJI0ExVc13pEg=",
-      "Common.dll": "sha256-aaCgDVn0O3AQtWhTL6s8yEnGvuo0qjG8gyetC5WF0Qs=",
+      "Business.dll": "sha256-ZAc7IMhJNlVn48s0KAbxTgLdrX8+lY9erlGQKn4+BjU=",
+      "Common.dll": "sha256-888VvcnNdOl6FZ4mYgAYDYm+mdWgj\/0mIAbOJFIAplU=",
       "DataAccess.dll": "sha256-ODq8UusX+kksGy13ljxaYT4Ffdgy8bMFTHRH0GatLyY=",
-      "Models.dll": "sha256-\/ZP183H91onfO322iXUju\/TXsOPhaCVtkCAXtT\/OPcY=",
-      "Wlog_Client.dll": "sha256-c6lrJHu3nTIpzihoyrGsKpAo7QsgLovrr5sgZ3\/R330="
+      "Models.dll": "sha256-eMdzKXpWTbKq2c9ua1hnQ3qQf4KulWK3MR0op0LL9Go=",
+      "Wlog_Client.dll": "sha256-ZAEOaU+IPpm1XDzPAqsoRMYhKPXLQIxK18o88SzVkhU="
     },
     "lazyAssembly": null,
     "pdb": {
-      "Business.pdb": "sha256-ocyDIIQRPJacnq1hlK\/b3l6x9WhLl2e2bbE2OgNadC8=",
-      "Common.pdb": "sha256-GOyhE3J03xSSWAIpSe7JRmnC3NK0pwi+ze3ZmV7gdoE=",
-      "Models.pdb": "sha256-TAFIanPQ9z5P0L2LdUxoGE\/3hI3tX8ZiiCR6acic3zA=",
+      "Business.pdb": "sha256-iU7s\/OsAWTka\/uP6bNcWoz2zVtRz706WliJfIN0jr5o=",
+      "Common.pdb": "sha256-JjMoXxjUFNFlmwL3e55ZZNMVd851OelWDdu7wcAE+RI=",
+      "Models.pdb": "sha256-nLtU6Eqz\/EJglD3ZaZucq3ZqJEhApAPj1ZElaO5gBwU=",
       "DataAccess.pdb": "sha256-6L7BbAHwt7cAtmd2xVee\/CE0H1Qu95bUzfgBXW4LbeY=",
-      "Wlog_Client.pdb": "sha256-+B5pkvdNI5kaqF9RiJqthSlDMitsM9nWAJKGLbDFj8U="
+      "Wlog_Client.pdb": "sha256-myt1m+F6rjosb0DPte9iI2pWVsNRTDTCzSr7bFRFSbI="
     },
     "runtime": {
       "dotnet.timezones.blat": "sha256-Uv0JiOiPEvlGxygIhcdY8XYm\/Nt+zgVckKrqB2uih0w=",

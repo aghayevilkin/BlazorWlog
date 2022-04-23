@@ -188,7 +188,7 @@ using MudBlazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsList.razor"
+#line 7 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsList.razor"
            [Authorize(Roles = SD.Role_Admin)]
 
 #line default
@@ -203,9 +203,10 @@ using MudBlazor;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 69 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsList.razor"
+#line 76 "C:\Users\ASUS\source\repos\Wlog\Wlog_Server\Pages\News\NewsList.razor"
        
 
+    public string newsDetail { get; set; }
 
 
     private bool dense = false;
@@ -227,6 +228,7 @@ using MudBlazor;
 
     private IEnumerable<NewsDTO> NewsModels { get; set; } = new List<NewsDTO>();
     private int? DeleteNewsId { get; set; } = null;
+    private int? ShowNewsId { get; set; } = null;
     private bool IsProcessing { get; set; } = false;
 
 
@@ -271,6 +273,14 @@ using MudBlazor;
         await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
     }
 
+    private async Task ShowDetails(int newsId)
+    {
+        DeleteNewsId = newsId;
+        var details = _db.News.FindAsync(newsId).Result;
+        newsDetail = details.Details;
+        await JsRuntime.InvokeVoidAsync("ShowNewsDetailsModal");
+    }
+
 
     public async Task ConfirmDelete_Click(bool isConfirmed)
     {
@@ -295,9 +305,24 @@ using MudBlazor;
     }
 
 
+    public async Task NewsDetails_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+
+        if (isConfirmed && DeleteNewsId != null)
+        {
+            NewsModels = await NewsRepository.GetAllNews();
+        }
+        await JsRuntime.InvokeVoidAsync("HideNewsDetailsModal");
+
+        IsProcessing = false;
+    }
+
+
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private AppDbContext _db { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IFileUpload FileUpload { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }

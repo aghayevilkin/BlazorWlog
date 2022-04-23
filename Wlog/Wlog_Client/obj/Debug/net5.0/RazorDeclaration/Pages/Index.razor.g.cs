@@ -82,6 +82,69 @@ using Wlog_Client.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Blazored.LocalStorage;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Helper;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Model.ViewModel;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Common;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 16 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Service.IService;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 17 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Microsoft.AspNetCore.Components.Authorization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 18 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Microsoft.AspNetCore.Authorization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 19 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.Authentication;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -90,6 +153,33 @@ using Wlog_Client.Shared;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 593 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+      
+
+    public IEnumerable<NewsDTO> News { get; set; } = new List<NewsDTO>();
+    public bool IsProcessing { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsProcessing = true;
+        News = await newsService.GetNews();
+        IsProcessing = false;
+    }
+
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("startCarousel", null);
+    }
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILocalStorageService localStorage { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
     }
 }
 #pragma warning restore 1591

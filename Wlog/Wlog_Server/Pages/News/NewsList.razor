@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @inject IFileUpload FileUpload
+@inject AppDbContext _db
 @attribute [Authorize(Roles = SD.Role_Admin)]
 
 <div class="row mt-4">
@@ -52,7 +53,9 @@
         <MudTd DataLabel="Title">@context.Title</MudTd>
         <MudTd DataLabel="Name">@context.Category.NewsCategory.Name</MudTd>
         <MudTd DataLabel="Category">@context.Category.Name</MudTd>
-        <MudTd DataLabel="Details"></MudTd>
+        <MudTd DataLabel="Details">
+            <button class="btn btn-success" @onclick="()=>ShowDetails(context.Id)">Details</button>
+        </MudTd>
         <MudTd DataLabel="#">
             <NavLink href="@($"news/edit/{context.Id}")" class="btn btn-primary">Edit</NavLink>
             <button class="btn btn-danger" @onclick="()=>HandleDelete(context.Id)">Delete</button>
@@ -65,9 +68,14 @@
 </MudTable>
 
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
+<CascadingValue Value="newsDetail" Name="newsDetail">
+    <NewsDetails IsParentComponentProcessing="IsProcessing" ConfirmationChanged="NewsDetails_Click"></NewsDetails>
+</CascadingValue>
+
 
 @code {
 
+    public string newsDetail { get; set; }
 
 
     private bool dense = false;
@@ -89,6 +97,7 @@
 
     private IEnumerable<NewsDTO> NewsModels { get; set; } = new List<NewsDTO>();
     private int? DeleteNewsId { get; set; } = null;
+    private int? ShowNewsId { get; set; } = null;
     private bool IsProcessing { get; set; } = false;
 
 
@@ -133,6 +142,14 @@
         await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
     }
 
+    private async Task ShowDetails(int newsId)
+    {
+        DeleteNewsId = newsId;
+        var details = _db.News.FindAsync(newsId).Result;
+        newsDetail = details.Details;
+        await JsRuntime.InvokeVoidAsync("ShowNewsDetailsModal");
+    }
+
 
     public async Task ConfirmDelete_Click(bool isConfirmed)
     {
@@ -152,6 +169,20 @@
             NewsModels = await NewsRepository.GetAllNews();
         }
         await JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+
+        IsProcessing = false;
+    }
+
+
+    public async Task NewsDetails_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+
+        if (isConfirmed && DeleteNewsId != null)
+        {
+            NewsModels = await NewsRepository.GetAllNews();
+        }
+        await JsRuntime.InvokeVoidAsync("HideNewsDetailsModal");
 
         IsProcessing = false;
     }
