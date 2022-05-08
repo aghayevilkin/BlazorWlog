@@ -58,7 +58,7 @@ namespace Business.Repository
             }
         }
 
-        public async Task<NewsSubCategoryDTO> GetNewsSubCategory(int categoryId)
+        public async Task<NewsSubCategoryDTO> GetNewsSubCategory(int? categoryId)
         {
             try
             {

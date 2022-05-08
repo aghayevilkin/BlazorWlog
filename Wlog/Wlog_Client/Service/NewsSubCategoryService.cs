@@ -20,10 +20,13 @@ namespace Wlog_Client.Service
 
         public async Task<IEnumerable<NewsSubCategoryDTO>> GetNewsSubCategory()
         {
-            var response = await _client.GetAsync($"news/NewsSubCategory");
+            var response = await _client.GetAsync($"news/AllNewsSubCategory");
             var content = await response.Content.ReadAsStringAsync();
             var newssubcategory = JsonConvert.DeserializeObject<IEnumerable<NewsSubCategoryDTO>>(content);
             return newssubcategory;
         }
+
+
+
     }
 }

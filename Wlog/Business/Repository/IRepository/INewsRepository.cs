@@ -15,5 +15,7 @@ namespace Business.Repository.IRepository
         public Task<int> DeleteNews(int newsId);
         public Task<IEnumerable<NewsDTO>> GetAllNews();
         public Task<NewsDTO> IsNewsUnique(string name, int newsId = 0);
+
+        public Task<NewsPaginationDTO> GetNewsPagingList(int currentPage = 1, int pageSize = 10);
     }
 }

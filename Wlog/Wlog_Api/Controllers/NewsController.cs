@@ -33,7 +33,19 @@ namespace Wlog_Api.Controllers
             var model = await _newsRepository.GetAllNews();
             return Ok(model);
         }
-        
+
+        [HttpGet("GetNewsPagingList")]
+        public async Task<IActionResult> GetNewsPagingList(int currentPage = 1, int pageSize = 10)
+        {
+
+            var result = _newsRepository.GetNewsPagingList(currentPage, pageSize);
+
+            if (result == null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
 
 
         [HttpGet("{newsId}")]
@@ -63,30 +75,6 @@ namespace Wlog_Api.Controllers
 
             return Ok(newsDetails);
 
-        }
-
-
-
-
-
-
-
-
-        [HttpGet("NewsCategory")]
-        public async Task<IActionResult> GetAllCategory()
-        {
-
-            var model = await _newsCategoryRepository.GetAllNewsCategory();
-            return Ok(model);
-        }
-
-
-        [HttpGet("NewsSubCategory")]
-        public async Task<IActionResult> GetAllSubCategory()
-        {
-
-            var model = await _newsSubCategoryRepository.GetAllNewsSubCategory();
-            return Ok(model);
         }
 
 

@@ -14,6 +14,8 @@ namespace Business.Mapper
         public MappingProfile()
         {
             CreateMap<NewsCategory, NewsCategoryDTO>().ReverseMap();
+            CreateMap<Subscribe, SubscribeDTO>().ReverseMap();
+            CreateMap<NewsComment, NewsCommentDTO>().ReverseMap();
             CreateMap<NewsSubCategory, NewsSubCategoryDTO>().ReverseMap();
             CreateMap<News, NewsDTO>().ReverseMap();
             CreateMap<NewsImage, NewsImageDTO>().ReverseMap();

@@ -105,42 +105,49 @@ using Models;
 #nullable disable
 #nullable restore
 #line 14 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
-using Model.ViewModel;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 15 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Common;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 16 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 15 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.Service.IService;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 17 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 16 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 18 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 17 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 19 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 18 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.Pages.Authentication;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 19 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using MudBlazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 6 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+using Wlog_Client.Pages.News;
 
 #line default
 #line hidden
@@ -154,11 +161,18 @@ using Wlog_Client.Pages.Authentication;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 593 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+#line 296 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
       
+
+    public int TakeLoad { get; set; } = 6;
+    public string Loadingmore { get; set; } = "";
+    public string LoadText { get; set; } = "Load More";
+
+    NewsPaginationDTO NewsPagingModel = new NewsPaginationDTO();
 
     public IEnumerable<NewsDTO> News { get; set; } = new List<NewsDTO>();
     public bool IsProcessing { get; set; } = false;
+    public bool IsLoading { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -167,11 +181,24 @@ using Wlog_Client.Pages.Authentication;
         IsProcessing = false;
     }
 
+    private async Task TakeLoadClick()
+    {
+        LoadText = "";
+        IsLoading = true;
+        await Task.Delay(1000);
+        TakeLoad = TakeLoad + 6;
+        IsLoading = false;
+        LoadText = "Load More";
+    }
+
+
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         await jsRuntime.InvokeVoidAsync("startCarousel", null);
     }
+
+
 
 #line default
 #line hidden

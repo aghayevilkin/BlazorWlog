@@ -65,7 +65,7 @@ namespace Business.Repository
             {
                 IEnumerable<NewsDTO> newsDTOs =
                             _mapper.Map<IEnumerable<News>, IEnumerable<NewsDTO>>
-                            (_db.News.Include(x => x.NewsImages).Include(c=>c.Category).ThenInclude(s=>s.NewsCategory).OrderByDescending(x => x.AddedDate));
+                            (_db.News.Include(x => x.NewsImages).Include(u=>u.User).Include(c=>c.Category).ThenInclude(s=>s.NewsCategory).OrderByDescending(x => x.AddedDate));
 
                 return newsDTOs;
             }
@@ -79,8 +79,15 @@ namespace Business.Repository
         {
             try
             {
+                News newssss = await _db.News.FirstOrDefaultAsync(x => x.Id == newsId);
+                newssss.ViewCount++;
+
+                await _db.SaveChangesAsync();
+
                 NewsDTO news = _mapper.Map<News, NewsDTO>(
-                    await _db.News.Include(x => x.NewsImages).Include(c => c.Category).ThenInclude(s => s.NewsCategory).FirstOrDefaultAsync(x => x.Id == newsId));
+                    await _db.News.Include(x => x.NewsImages).Include(x=>x.User).Include(c => c.Category).ThenInclude(s => s.NewsCategory).FirstOrDefaultAsync(x => x.Id == newsId));
+
+                
 
                 return news;
             }
@@ -145,7 +152,33 @@ namespace Business.Repository
             }
         }
 
+        public async Task<NewsPaginationDTO> GetNewsPagingList(int currentPage = 1, int pageSize = 10)
+        {
+            var model = new NewsPaginationDTO();
 
+            IEnumerable<NewsDTO> newsDTOs =
+                             _mapper.Map<IEnumerable<News>, IEnumerable<NewsDTO>>
+                             (_db.News.Include(x => x.NewsImages).Include(u => u.User).Include(c => c.Category).ThenInclude(s => s.NewsCategory).OrderByDescending(x => x.AddedDate).Skip(currentPage - 1).Take(pageSize));
+
+            model.NewsList = newsDTOs;
+
+            int totalRecord = _db.News.Count();
+
+            var page = new PaginationDTO
+            {
+                Count = totalRecord,
+                CurrentPage = currentPage,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling(decimal.Divide(totalRecord, pageSize)),
+                IndexOne = ((currentPage - 1) * pageSize + 1),
+                IndexTwo = (((currentPage - 1) * pageSize + pageSize) <= totalRecord ? ((currentPage - 1) * pageSize + pageSize) : totalRecord)
+            };
+
+            model.Pagination = page;
+
+            return model;
+
+        }
 
     }
 }

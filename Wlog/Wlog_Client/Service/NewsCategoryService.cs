@@ -18,20 +18,31 @@ namespace Wlog_Client.Service
             _client = client;
         }
 
-        public async Task<IEnumerable<NewsCategoryDTO>> GetCategory()
+        public async Task<IEnumerable<NewsCategoryDTO>> GetAllCategory()
         {
-            var response = await _client.GetAsync($"news/NewsCategory");
+            var response = await _client.GetAsync($"newscategory");
             var content = await response.Content.ReadAsStringAsync();
             var newscategory = JsonConvert.DeserializeObject<IEnumerable<NewsCategoryDTO>>(content);
             return newscategory;
         }
 
-        public async Task<IEnumerable<NewsSubCategoryDTO>> GetNewsSubCategory()
+        public async Task<NewsCategoryDTO> GetCategory(int? cateId)
         {
-            var response = await _client.GetAsync($"news/NewsSubCategory");
-            var content = await response.Content.ReadAsStringAsync();
-            var newssubcategory = JsonConvert.DeserializeObject<IEnumerable<NewsSubCategoryDTO>>(content);
-            return newssubcategory;
+            var response = await _client.GetAsync($"newscategory/{cateId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var news = JsonConvert.DeserializeObject<NewsCategoryDTO>(content);
+
+
+                return news;
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var errorModel = JsonConvert.DeserializeObject<ErrorModel>(content);
+                throw new Exception(errorModel.ErrorMessage);
+            }
         }
 
     }

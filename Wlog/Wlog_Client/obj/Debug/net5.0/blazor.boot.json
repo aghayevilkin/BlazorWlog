@@ -56,6 +56,7 @@
       "Microsoft.JSInterop.dll": "sha256-1pTA0jNmI3yFlUcra3ChlWUZgNtrO8f9SBk369sCfhQ=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-82WpISDbT05plFV\/m3Glhh8w1jttcRp+pgJDwKwl7Q0=",
       "Microsoft.Win32.SystemEvents.dll": "sha256-56MWX7GCuiW+O0EPzkUo0jj6T\/mhpVB6x+UFQtaS2qE=",
+      "MudBlazor.dll": "sha256-CoZdNobibj1ifRr\/kzK565\/RZngOzz7Rfdky+H\/K9FU=",
       "Newtonsoft.Json.dll": "sha256-etsgJYQb32kqVnEuCK\/nXhcwxx1keKj+1XWs1DJRpmI=",
       "System.Configuration.ConfigurationManager.dll": "sha256-Rmj4lST8tNcZUOCtfg1W5eXbLHDjla1J99tqgWTMUNY=",
       "System.Drawing.Common.dll": "sha256-E+\/s4U4Xt\/iFr\/+Dd7ZSqXXAOJZKgnOAW4C5r7OPcHc=",
@@ -230,19 +231,19 @@
       "mscorlib.dll": "sha256-0qsbc1acYr3S6P7t9gSYyghOhMVs3CTJ9ukQ1VXqksY=",
       "netstandard.dll": "sha256-4Ejn1oHpeqmTQlJx7Kjuipn0ZVOoG0hGncN+9qyL1lo=",
       "System.Private.CoreLib.dll": "sha256-7n\/jioZu+\/2tD7v1RgjTTrBrviX+kVwPFGJ\/JBsHQGA=",
-      "Business.dll": "sha256-ZAc7IMhJNlVn48s0KAbxTgLdrX8+lY9erlGQKn4+BjU=",
+      "Business.dll": "sha256-go0d3GAn2XV99CSFjUJ4UYOlpkYps1QAqAEhrulbt\/o=",
       "Common.dll": "sha256-888VvcnNdOl6FZ4mYgAYDYm+mdWgj\/0mIAbOJFIAplU=",
       "DataAccess.dll": "sha256-ODq8UusX+kksGy13ljxaYT4Ffdgy8bMFTHRH0GatLyY=",
-      "Models.dll": "sha256-eMdzKXpWTbKq2c9ua1hnQ3qQf4KulWK3MR0op0LL9Go=",
-      "Wlog_Client.dll": "sha256-ZAEOaU+IPpm1XDzPAqsoRMYhKPXLQIxK18o88SzVkhU="
+      "Models.dll": "sha256-XnPmkDgT+vu6DWXPqQikEHTEq6r0fjVZyOgHtsad23s=",
+      "Wlog_Client.dll": "sha256-Oq\/l9IYqZVBGA8eWCTf+ECesYzynxZxV5wel2Gwxmkg="
     },
     "lazyAssembly": null,
     "pdb": {
-      "Business.pdb": "sha256-iU7s\/OsAWTka\/uP6bNcWoz2zVtRz706WliJfIN0jr5o=",
+      "Business.pdb": "sha256-zKjrI65Uz\/T\/0AlpQWlgUMIhL99JoJwPdwPoz0XWzKY=",
       "Common.pdb": "sha256-JjMoXxjUFNFlmwL3e55ZZNMVd851OelWDdu7wcAE+RI=",
-      "Models.pdb": "sha256-nLtU6Eqz\/EJglD3ZaZucq3ZqJEhApAPj1ZElaO5gBwU=",
+      "Models.pdb": "sha256-84nV0A2SWxMc5Cv1ktTvSGy6Ps\/dQTmI1nbelPDkNj8=",
       "DataAccess.pdb": "sha256-6L7BbAHwt7cAtmd2xVee\/CE0H1Qu95bUzfgBXW4LbeY=",
-      "Wlog_Client.pdb": "sha256-myt1m+F6rjosb0DPte9iI2pWVsNRTDTCzSr7bFRFSbI="
+      "Wlog_Client.pdb": "sha256-8Zs1gdW9hCx0YuQ7q2KDWc8sQnklBffZJ4FwZjVWK1w="
     },
     "runtime": {
       "dotnet.timezones.blat": "sha256-Uv0JiOiPEvlGxygIhcdY8XYm\/Nt+zgVckKrqB2uih0w=",

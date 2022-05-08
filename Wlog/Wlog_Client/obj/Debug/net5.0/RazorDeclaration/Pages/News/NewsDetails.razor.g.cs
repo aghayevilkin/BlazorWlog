@@ -105,47 +105,54 @@ using Models;
 #nullable disable
 #nullable restore
 #line 14 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
-using Model.ViewModel;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 15 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Common;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 16 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 15 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.Service.IService;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 17 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 16 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 18 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 17 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 19 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 18 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.Pages.Authentication;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/news/news-details/{Id:int}")]
+#nullable restore
+#line 19 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using MudBlazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 8 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
+using System.Threading;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/news/details/{Id:int}")]
     public partial class NewsDetails : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -154,25 +161,53 @@ using Wlog_Client.Pages.Authentication;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 266 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
+#line 139 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
        
     [Parameter]
     public int? Id { get; set; }
 
-    public NewsDTO News { get; set; } = new NewsDTO();
 
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+
+
+    public NewsDTO News { get; set; } = new NewsDTO();
+    public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
+    public NewsCommentDTO Comment { get; set; } = new NewsCommentDTO();
 
     protected override async Task OnInitializedAsync()
     {
-        News = await newsService.GetNewsDetails((int)Id);
+        News = await newsService.GetNewsDetails(Id);
+        NewsList = await newsService.GetNews();
+
     }
+
+
+
+    private async Task HandleComment()
+    {
+        Comment.UserId = "27428551-6269-4e4e-8157-c381dc7a23e9";
+        Comment.NewsId = News.Id;
+        await newsCommentService.CreateNewsComment(Comment);
+
+        await jsRuntime.ToastrSuccess("Create Comment");
+        
+
+    }
+
+
 
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCommentService newsCommentService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ISubscribeService subscribeService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILocalStorageService localStorage { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
     }
 }

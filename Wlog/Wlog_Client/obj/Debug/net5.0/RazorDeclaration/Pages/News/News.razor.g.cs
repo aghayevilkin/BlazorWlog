@@ -105,47 +105,48 @@ using Models;
 #nullable disable
 #nullable restore
 #line 14 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
-using Model.ViewModel;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 15 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Common;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 16 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 15 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.Service.IService;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 17 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 16 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 18 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 17 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 19 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+#line 18 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.Pages.Authentication;
 
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 19 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using MudBlazor;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/news")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/news/category/{id:int}")]
     public partial class News : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -153,8 +154,75 @@ using Wlog_Client.Pages.Authentication;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 79 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\News.razor"
+       
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public string Url { get; set; }
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private bool hideRowsPerPage = true;
+    private string searchString1 = "";
+    private NewsDTO selectedItem1 = null;
+    private HashSet<NewsDTO> selectedItems = new HashSet<NewsDTO>();
+
+    public NewsCategoryDTO NewsCategoryModel { get; set; } = new NewsCategoryDTO();
+
+    public IEnumerable<NewsDTO> NewsModel { get; set; } = new List<NewsDTO>();
+
+
+    public bool IsProcessing { get; set; } = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        navigationManager.LocationChanged += (o, e) =>
+        {
+            Url = navigationManager.Uri;
+            navigationManager.NavigateTo(Url, true);
+        };
+
+        NewsCategoryModel = await newsCategoryService.GetCategory(Id);
+
+        IsProcessing = true;
+        NewsModel = await newsService.GetNews();
+        IsProcessing = false;
+    }
+
+
+
+    private bool FilterFunc1(NewsDTO element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(NewsDTO element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Category.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Category.NewsCategory.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    }
+
+
+#line default
+#line hidden
+#nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCategoryService newsCategoryService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILocalStorageService localStorage { get; set; }
     }
 }

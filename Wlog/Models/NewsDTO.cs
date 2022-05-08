@@ -29,11 +29,15 @@ namespace Models
         [NotMapped]
         public int[] TagIds { get; set; }
         public string UserId { get; set; }
-        public List<NewsComment> Comments { get; set; }
-        public List<TagToNews> TagToNews { get; set; }
-        public List<SavedNews> SavedNews { get; set; }
+        [ForeignKey("UserId")]
+        public CustomUser User { get; set; }
 
-        public virtual ICollection<NewsImage> NewsImages { get; set; }
+
+        public virtual ICollection<NewsComment> NewsComments { get; set; }
+        public virtual ICollection<TagToNews> TagToNews { get; set; }
+        public virtual ICollection<SavedNews> SavedNews { get; set; }
+
+        public virtual ICollection<NewsImageDTO> NewsImages { get; set; }
         public List<string> ImageUrls { get; set; }
     }
 }

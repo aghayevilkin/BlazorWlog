@@ -8,6 +8,7 @@ namespace Wlog_Client.Service.IService
 {
     public interface INewsCategoryService
     {
-        public Task<IEnumerable<NewsCategoryDTO>> GetCategory();
+        public Task<IEnumerable<NewsCategoryDTO>> GetAllCategory();
+        public Task<NewsCategoryDTO> GetCategory(int? cateId);
     }
 }

@@ -11,7 +11,7 @@ namespace Business.Repository.IRepository
     {
         public Task<NewsSubCategoryDTO> CreateNewsSubCategory(NewsSubCategoryDTO newsSubCategoryDTO);
         public Task<NewsSubCategoryDTO> UpdateNewsSubCategory(int categoryId, NewsSubCategoryDTO newsSubCategoryDTO);
-        public Task<NewsSubCategoryDTO> GetNewsSubCategory(int categoryId);
+        public Task<NewsSubCategoryDTO> GetNewsSubCategory(int? categoryId);
         public Task<int> DeleteNewsSubCategory(int categoryId);
         public Task<IEnumerable<NewsSubCategoryDTO>> GetAllNewsSubCategory();
     }

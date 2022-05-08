@@ -1,0 +1,123 @@
+﻿@inject IJSRuntime jsRuntime
+@inject NavigationManager navigationManager
+@inject ILocalStorageService localStorage
+@inject INewsService newsService
+@inject ISubscribeService subscribeService
+
+<div class="col-lg-4">
+    <!-- Ads Start -->
+    <div class="mb-3">
+        <div class="section-title mb-0">
+            <h4 class="m-0 text-uppercase font-weight-bold">Reklam</h4>
+        </div>
+        <div class="bg-white text-center border border-top-0 p-3">
+            <a href=""><img class="img-fluid" src="img/news-800x500-2.jpg" alt=""></a>
+        </div>
+    </div>
+    <!-- Ads End -->
+    <!-- Popular News Start -->
+    <div class="mb-3">
+        <div class="section-title mb-0">
+            <h4 class="m-0 text-uppercase font-weight-bold">Tranding News</h4>
+        </div>
+        <div class="bg-white border border-top-0 p-3">
+            @foreach (var item in NewsList.OrderByDescending(x => x.ViewCount).Take(5))
+            {
+                <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
+                    @foreach (var img in item.NewsImages.Take(1))
+                    {
+                        <img class="img-fluid" style="max-width:40%;" src="@img.NewsImageUrl" alt="">
+                    }
+
+                    <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                        <div class="mb-2">
+                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2"  href="@($"news/category/{item.Category.NewsCategory.Id}")">@item.Category.NewsCategory.Name</a>
+                            <a class="text-body" href=""><small>@item.AddedDate.ToString("dd MMM yyyy")</small></a>
+                        </div>
+                        <a class="h6 m-0 text-secondary text-uppercase font-weight-bold" href="@($"news/details/{item.Id}")">@((item.Title != null && item.Title.Length > 25 ? item.Title.Substring(0, 25) + "..." : item.Title))</a>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <!-- Popular News End -->
+    <!-- Newsletter Start -->
+    <div class="mb-3">
+        <div class="section-title mb-0">
+            <h4 class="m-0 text-uppercase font-weight-bold">Abunə olun</h4>
+        </div>
+        <div class="bg-white text-center border border-top-0 p-3">
+            <div class="input-group mb-2" style="width: 100%;">
+                <EditForm Model=" Subscribe" OnValidSubmit="HandleSubscribe">
+                    <DataAnnotationsValidator />
+                    <InputText @bind-Value="Subscribe.Email" type="text" class="form-control form-control-lg" placeholder="Your Email" />
+                    <ValidationMessage For="(()=>Subscribe.Email)" style="margin-top: 0.5rem;" />
+                    <div class="input-group-append mt-3">
+                        <button type="submit" class="btn btn-primary font-weight-bold px-3">Abunə ol</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    <!-- Newsletter End -->
+    <!-- Tags Start -->
+    <div class="mb-3">
+        <div class="section-title mb-0">
+            <h4 class="m-0 text-uppercase font-weight-bold">Tags</h4>
+        </div>
+        <div class="bg-white border border-top-0 p-3">
+            <div class="d-flex flex-wrap m-n1">
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Politics</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Corporate</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Health</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Education</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Science</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Foods</a>
+                <a href="" class="btn btn-sm btn-outline-secondary m-1">Travel</a>
+            </div>
+        </div>
+    </div>
+    <!-- Tags End -->
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public SubscribeDTO Subscribe { get; set; } = new SubscribeDTO();
+    public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
+    public IEnumerable<SubscribeDTO> SubscribesList { get; set; } = new List<SubscribeDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        NewsList = await newsService.GetNews();
+        SubscribesList = await subscribeService.GetSubscribes();
+
+    }
+
+
+
+    private async Task HandleSubscribe()
+    {
+        if (SubscribesList.Any(x => x.Email == Subscribe.Email))
+        {
+            await jsRuntime.ToastrError("Bu email ilə artıq abunə olunub");
+        }
+        else
+        {
+            await subscribeService.CreateSubcribe(Subscribe);
+
+            await jsRuntime.ToastrSuccess("Abunə oldunuz");
+            Subscribe.Email = null;
+        }
+
+    }
+
+
+
+}

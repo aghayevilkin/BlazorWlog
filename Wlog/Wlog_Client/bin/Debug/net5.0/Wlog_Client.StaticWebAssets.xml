@@ -2,4 +2,5 @@
   <ContentRoot BasePath="/" Path="C:\Users\ASUS\source\repos\Wlog\Wlog_Client\bin\Debug\net5.0\wwwroot\" />
   <ContentRoot BasePath="/" Path="C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\scopedcss\bundle\" />
   <ContentRoot BasePath="_content/Blazored.TextEditor" Path="C:\Users\ASUS\.nuget\packages\blazored.texteditor\1.0.7\build\..\staticwebassets\" />
+  <ContentRoot BasePath="_content/MudBlazor" Path="C:\Users\ASUS\.nuget\packages\mudblazor\5.1.2\build\..\staticwebassets\" />
 </StaticWebAssets>

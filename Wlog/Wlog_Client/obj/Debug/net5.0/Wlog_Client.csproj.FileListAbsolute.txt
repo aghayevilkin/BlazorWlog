@@ -759,3 +759,10 @@ C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Sh
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Shared\FooterMenu.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\News\NewsDetails.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\News\NewsDetails.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\bin\Debug\net5.0\wwwroot\_framework\MudBlazor.dll.gz
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\bin\Debug\net5.0\wwwroot\_framework\MudBlazor.dll
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\build-gz\jVhEJmGc.gz
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\News\NewsRightSide.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\News\NewsRightSide.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Shared\Pagination.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Shared\Pagination.razor.g.cs

@@ -9,6 +9,7 @@ namespace Wlog_Client.Service.IService
     public interface INewsService
     {
         public Task<IEnumerable<NewsDTO>> GetNews();
-        public Task<NewsDTO> GetNewsDetails(int newsId);
+        public Task<NewsDTO> GetNewsDetails(int? newsId);
+        public Task<NewsPaginationDTO> GetNewsPaginationList(int currentPage = 1, int pageSize = 10);
     }
 }
