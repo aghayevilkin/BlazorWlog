@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.Repository.IRepository;
+using Common;
 using DataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,13 +27,15 @@ namespace Wlog_Api.Controllers
         private readonly UserManager<CustomUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly APISettings _aPISettings;
+        private readonly IAccountRepository _accountRepository;
 
-        public AccountController(SignInManager<CustomUser> signInManager, UserManager<CustomUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<APISettings> options)
+        public AccountController(SignInManager<CustomUser> signInManager, UserManager<CustomUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<APISettings> options, IAccountRepository accountRepository)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _aPISettings = options.Value;
+            _accountRepository = accountRepository;
         }
 
 
@@ -112,6 +115,9 @@ namespace Wlog_Api.Controllers
                     signingCredentials: signinCredentials);
 
                 var token = new JwtSecurityTokenHandler().WriteToken(TokenOptions);
+                //var roles = await _userManager.GetRolesAsync(user);
+
+
 
                 return Ok(new AuthenticationResponseDTO
                 {
@@ -121,10 +127,16 @@ namespace Wlog_Api.Controllers
                     {
                         Id = user.Id,
                         Name = user.Name,
+                        Surname = user.Surname,
+                        Profision = user.Profision,
+                        Adress = user.Adress,
+                        IsVerify = user.IsVerify,
+                        About = user.About,
                         Email = user.Email,
                         PhoneNo = user.PhoneNumber
+                        //Role = roles.FirstOrDefault()
                     }
-                });
+                });;
 
             }
             else
@@ -161,6 +173,92 @@ namespace Wlog_Api.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
             return claims;
+        }
+
+
+
+
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUser(string userId)
+        {
+            if (userId == null)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid User Id",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
+
+            var UserInfo = await _accountRepository.GetUser(userId);
+
+
+            if (UserInfo == null)
+            {
+                return NotFound(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid User id",
+                    StatusCode = StatusCodes.Status404NotFound
+                });
+            }
+
+            return Ok(UserInfo);
+
+        }
+
+
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserRole(string userId)
+        {
+            if (userId == null)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid User Id",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
+
+            var UserRoleInfo = await _accountRepository.GetUserRole(userId);
+
+
+
+            if (UserRoleInfo == null)
+            {
+                return NotFound(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid User id",
+                    StatusCode = StatusCodes.Status404NotFound
+                });
+            }
+
+            return Ok(UserRoleInfo);
+
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser([FromBody] UserDTO userDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountRepository.UpdateUser(userDTO);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    ErrorMessage = "Error while Updating User"
+                });
+            }
         }
 
 

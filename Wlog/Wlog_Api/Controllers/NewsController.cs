@@ -16,13 +16,15 @@ namespace Wlog_Api.Controllers
         private readonly INewsRepository _newsRepository;
         private readonly INewsCategoryRepository _newsCategoryRepository;
         private readonly INewsSubCategoryRepository _newsSubCategoryRepository;
+        private readonly IMessageRepository _messageRepository;
 
 
-        public NewsController(INewsRepository newsRepository, INewsCategoryRepository newsCategoryRepository, INewsSubCategoryRepository newsSubCategoryRepository)
+        public NewsController(INewsRepository newsRepository, INewsCategoryRepository newsCategoryRepository, INewsSubCategoryRepository newsSubCategoryRepository, IMessageRepository messageRepository)
         {
             _newsRepository = newsRepository;
             _newsCategoryRepository = newsCategoryRepository;
             _newsSubCategoryRepository = newsSubCategoryRepository;
+            _messageRepository = messageRepository;
         }
 
 
@@ -75,6 +77,26 @@ namespace Wlog_Api.Controllers
 
             return Ok(newsDetails);
 
+        }
+
+
+
+
+        [HttpPost("CreateMessage")]
+        public async Task<IActionResult> CreateMessage([FromBody] MessageDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _messageRepository. Create(model);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    ErrorMessage = "Error while creating Message"
+                });
+            }
         }
 
 

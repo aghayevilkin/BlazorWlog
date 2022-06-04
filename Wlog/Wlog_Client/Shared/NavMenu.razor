@@ -1,4 +1,6 @@
-﻿@inject INewsCategoryService newsCategoryService
+﻿@inject ILocalStorageService localStorage
+@inject INewsCategoryService newsCategoryService
+@inject IAccountService accountService
 <!-- Topbar Start -->
 <div class="container-fluid d-none d-lg-block">
     <div class="row align-items-center bg-white py-3 px-lg-5">
@@ -36,15 +38,58 @@
                         }
                     </div>
                 </div>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                <a href="contact" class="nav-item nav-link">Contact</a>
             </div>
             <div class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
-                <input type="text" class="form-control border-0" placeholder="Keyword">
-                <div class="input-group-append">
-                    <button class="input-group-text bg-primary text-dark border-0 px-3">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
+                <ul class="navbar-nav mr-auto"></ul>
+                <ul class="my-0 navbar-nav">
+                    <AuthorizeView>
+                        <Authorized>
+                            <div class="action">
+                                <div class="profile" onclick="menuToggle();">
+                                    <img style="background:white;" src="img/avatar.png" />
+                                </div>
+                                <div class="menu">
+                                    <h3 class="text-white">@UserDetails.Name @UserDetails.Surname<br /><span>@UserDetails.Profision</span></h3>
+                                    <ul>
+                                        <li>
+                                            <i class="fa-solid fa-user fa-lg menuicon"></i><a href="account">My profile</a>
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-pen-to-square fa-lg menuicon"></i><a href="#">Edit profile</a>
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-envelope fa-lg menuicon"></i><a href="#">Inbox</a>
+                                        </li>
+                                        <li>
+                                            <i class="fa-solid fa-gear fa-lg menuicon"></i><a href="#">Setting</a>
+                                        </li>
+                                        <li><i class="fa-solid fa-circle-question fa-lg menuicon"></i><a href="#">Help</a></li>
+                                        <li>
+                                            <i class="fa-solid fa-power-off fa-lg menuicon"></i><a href="logout">Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </Authorized>
+                        <NotAuthorized>
+                            <li class="nav-item p-0">
+                                <NavLink class="nav-link" href="registration">
+                                    <span class="p-2">
+                                        Register
+                                    </span>
+                                </NavLink>
+                            </li>
+                            <li class="nav-item p-0">
+                                <NavLink class="nav-link" href="login">
+                                    <span class="p-2">
+                                        Login
+                                    </span>
+                                </NavLink>
+                            </li>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </ul>
             </div>
         </div>
     </nav>
@@ -52,13 +97,20 @@
 <!-- Navbar End -->
 
 @code {
-    
+
     public IEnumerable<NewsCategoryDTO> NewsCategoryList { get; set; } = new List<NewsCategoryDTO>();
+    public UserDTO UserDetails { get; set; } = new UserDTO();
+    public UserRoleDTO UserRole { get; set; } = new UserRoleDTO();
 
 
     protected override async Task OnInitializedAsync()
     {
         NewsCategoryList = await newsCategoryService.GetAllCategory();
+        var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+
+        UserDetails = await accountService.USerDetails(userInfo.Id);
+        UserRole = await accountService.USerRole(userInfo.Id);
     }
 
 

@@ -17,7 +17,7 @@ namespace Models
         [MaxLength(2000)]
         public string Message { get; set; }
         public int NewsId { get; set; }
-
+        public CustomUser User { get; set; }
         public string UserId { get; set; }
 
         public int? CommentId { get; set; }

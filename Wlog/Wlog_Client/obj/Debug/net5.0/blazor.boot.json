@@ -231,19 +231,19 @@
       "mscorlib.dll": "sha256-0qsbc1acYr3S6P7t9gSYyghOhMVs3CTJ9ukQ1VXqksY=",
       "netstandard.dll": "sha256-4Ejn1oHpeqmTQlJx7Kjuipn0ZVOoG0hGncN+9qyL1lo=",
       "System.Private.CoreLib.dll": "sha256-7n\/jioZu+\/2tD7v1RgjTTrBrviX+kVwPFGJ\/JBsHQGA=",
-      "Business.dll": "sha256-go0d3GAn2XV99CSFjUJ4UYOlpkYps1QAqAEhrulbt\/o=",
+      "Business.dll": "sha256-jAtjYCn8HC6tIhPdEG0xQGuyPwWJBaUe9in4bayzBAA=",
       "Common.dll": "sha256-888VvcnNdOl6FZ4mYgAYDYm+mdWgj\/0mIAbOJFIAplU=",
-      "DataAccess.dll": "sha256-ODq8UusX+kksGy13ljxaYT4Ffdgy8bMFTHRH0GatLyY=",
-      "Models.dll": "sha256-XnPmkDgT+vu6DWXPqQikEHTEq6r0fjVZyOgHtsad23s=",
-      "Wlog_Client.dll": "sha256-Oq\/l9IYqZVBGA8eWCTf+ECesYzynxZxV5wel2Gwxmkg="
+      "DataAccess.dll": "sha256-MjPbGr2kUa9PcoJy1N19G+rBE23ZnsP2TtfNKKBZRII=",
+      "Models.dll": "sha256-WJXfAX2amqRXWE6E6LG3FNHafHnQEFquaJrI3OQ2LqI=",
+      "Wlog_Client.dll": "sha256-vLEsXby7thQ2yrJgvSG9qtBrJk391iJS36tYJ18drTU="
     },
     "lazyAssembly": null,
     "pdb": {
-      "Business.pdb": "sha256-zKjrI65Uz\/T\/0AlpQWlgUMIhL99JoJwPdwPoz0XWzKY=",
+      "Business.pdb": "sha256-l1nn5JcphIUofYVnFl4opaxnuTDYX+WIEISp57xRO+E=",
       "Common.pdb": "sha256-JjMoXxjUFNFlmwL3e55ZZNMVd851OelWDdu7wcAE+RI=",
-      "Models.pdb": "sha256-84nV0A2SWxMc5Cv1ktTvSGy6Ps\/dQTmI1nbelPDkNj8=",
-      "DataAccess.pdb": "sha256-6L7BbAHwt7cAtmd2xVee\/CE0H1Qu95bUzfgBXW4LbeY=",
-      "Wlog_Client.pdb": "sha256-8Zs1gdW9hCx0YuQ7q2KDWc8sQnklBffZJ4FwZjVWK1w="
+      "Models.pdb": "sha256-n3ynZjDk5rWH7T0GqwcWKnvEHWteT4ova0uFqgJJ0So=",
+      "DataAccess.pdb": "sha256-74WAEjIGGGWU8SwL6kUe4kTK5qxUvja5f59ki8uXAh8=",
+      "Wlog_Client.pdb": "sha256-yrDcS0lk4+bDNOakZ6TqgEReMg+8aNj\/MTLoRvDR1Kg="
     },
     "runtime": {
       "dotnet.timezones.blat": "sha256-Uv0JiOiPEvlGxygIhcdY8XYm\/Nt+zgVckKrqB2uih0w=",

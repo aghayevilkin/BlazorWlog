@@ -19,6 +19,8 @@ namespace Business.Mapper
             CreateMap<NewsSubCategory, NewsSubCategoryDTO>().ReverseMap();
             CreateMap<News, NewsDTO>().ReverseMap();
             CreateMap<NewsImage, NewsImageDTO>().ReverseMap();
+            CreateMap<Message, MessageDTO>().ReverseMap();
+            CreateMap<CustomUser, UserDTO>().ReverseMap();
 
         }
     }

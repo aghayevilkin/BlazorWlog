@@ -145,6 +145,20 @@ using MudBlazor;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 20 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.News;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 21 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.ModelVM;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NewsRightSide : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -153,7 +167,7 @@ using MudBlazor;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 87 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsRightSide.razor"
+#line 67 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsRightSide.razor"
        
     [Parameter]
     public int Id { get; set; }

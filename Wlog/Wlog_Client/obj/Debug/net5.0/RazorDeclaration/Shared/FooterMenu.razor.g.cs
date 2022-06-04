@@ -145,6 +145,20 @@ using MudBlazor;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 20 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.News;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 21 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.ModelVM;
+
+#line default
+#line hidden
+#nullable disable
     public partial class FooterMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -152,6 +166,25 @@ using MudBlazor;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 90 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Shared\FooterMenu.razor"
+       
+
+    public IEnumerable<NewsCategoryDTO> NewsCategoryList { get; set; } = new List<NewsCategoryDTO>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewsCategoryList = await newsCategoryService.GetAllCategory();
+    }
+
+
+
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCategoryService newsCategoryService { get; set; }
     }
 }
 #pragma warning restore 1591

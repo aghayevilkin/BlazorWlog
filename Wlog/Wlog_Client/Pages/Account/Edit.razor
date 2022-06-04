@@ -1,0 +1,97 @@
+﻿@page "/account/edit"
+@inject ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@inject IAccountService accountService
+
+
+<div class="container">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <EditForm Model="UserDetails" OnValidSubmit="HandleUserEdit">
+                    <DataAnnotationsValidator />
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <InputText @bind-Value="UserDetails.Name" type="text" class="form-control" placeholder="Your Name" />
+                            <ValidationMessage For="(()=>UserDetails.Name)" style="margin-top: 0.5rem;" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Surname</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <InputText @bind-Value="UserDetails.Surname" type="text" class="form-control" placeholder="Your Surname" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Profision</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <InputText @bind-Value="UserDetails.Profision" type="text" class="form-control" placeholder="Your Profision" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Address</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <InputText @bind-Value="UserDetails.Adress" type="text" class="form-control" placeholder="Your Adress" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">About</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <InputText @bind-Value="UserDetails.About" type="text" class="form-control" placeholder="Your About" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-9 text-secondary">
+                            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                        </div>
+                    </div>
+                </EditForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    public bool IsProcessing { get; set; } = false;
+
+    public UserDTO UserDetails { get; set; } = new UserDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+
+        IsProcessing = true;
+        UserDetails = await accountService.USerDetails(userInfo.Id);
+        IsProcessing = false;
+    }
+
+
+    private async Task HandleUserEdit()
+    {
+        await accountService.UpdateUser(UserDetails);
+
+        await jsRuntime.ToastrSuccess("Updated");
+
+        navigationManager.NavigateTo("account");
+
+    }
+
+
+}

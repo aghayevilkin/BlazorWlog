@@ -146,7 +146,21 @@ using MudBlazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
+#line 20 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.News;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 21 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.ModelVM;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 9 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
 using System.Threading;
 
 #line default
@@ -161,11 +175,18 @@ using System.Threading;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 139 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
+#line 175 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
        
     [Parameter]
     public int? Id { get; set; }
 
+    public int? CommentID = null;
+    public string CommentUser = null;
+
+    public int TakeLoad { get; set; } = 2;
+    public string Loadingmore { get; set; } = "";
+    public string LoadText { get; set; } = "Daha çox yüklə";
+    public bool IsLoading { get; set; } = false;
 
     private bool arrows = true;
     private bool bullets = true;
@@ -175,12 +196,14 @@ using System.Threading;
 
     public NewsDTO News { get; set; } = new NewsDTO();
     public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
+    public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
     public NewsCommentDTO Comment { get; set; } = new NewsCommentDTO();
 
     protected override async Task OnInitializedAsync()
     {
         News = await newsService.GetNewsDetails(Id);
         NewsList = await newsService.GetNews();
+        CommentList = await newsCommentService.GetNewsComment();
 
     }
 
@@ -188,21 +211,55 @@ using System.Threading;
 
     private async Task HandleComment()
     {
-        Comment.UserId = "27428551-6269-4e4e-8157-c381dc7a23e9";
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            Comment.UserId = userInfo.Id;
+        }
         Comment.NewsId = News.Id;
+        Comment.CommentId = CommentID;
         await newsCommentService.CreateNewsComment(Comment);
 
         await jsRuntime.ToastrSuccess("Create Comment");
-        
+
+        CommentList = await newsCommentService.GetNewsComment();
+        Comment.Message = null;
+        CommentID = null;
+        CommentUser = null;
+
 
     }
 
+    private async Task TakeLoadClick()
+    {
+        LoadText = "";
+        IsLoading = true;
+        await Task.Delay(1000);
+        TakeLoad = TakeLoad + 2;
+        IsLoading = false;
+        LoadText = "Daha çox yüklə";
+    }
 
+
+    void ReplyClicked(int commentID, string commentUser)
+    {
+        CommentID = commentID;
+        CommentUser = commentUser;
+    }
+
+    void dontReplyClick()
+    {
+        CommentID = null;
+        CommentUser = null;
+    }
 
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDialogService dialogService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCommentService newsCommentService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private ISubscribeService subscribeService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }

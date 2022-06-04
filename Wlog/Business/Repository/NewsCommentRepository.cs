@@ -2,6 +2,7 @@
 using Business.Repository.IRepository;
 using DataAccess.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -32,11 +33,6 @@ namespace Business.Repository
             NewsComment newsComment = _mapper.Map<NewsCommentDTO, NewsComment>(newsCommentDTO);
             newsComment.AddedDate = DateTime.Now;
 
-            if (newsCommentDTO.UserId == null)
-            {
-                newsCommentDTO.UserId = userId;
-            }
-
             var addedComment = await _db.NewsComments.AddAsync(newsComment);
 
             await _db.SaveChangesAsync();
@@ -54,7 +50,7 @@ namespace Business.Repository
             {
                 IEnumerable<NewsCommentDTO> newsCommentDTOs =
                             _mapper.Map<IEnumerable<NewsComment>, IEnumerable<NewsCommentDTO>>
-                            (_db.NewsComments.OrderByDescending(x => x.AddedDate));
+                            (_db.NewsComments.Include(x => x.User).OrderByDescending(x => x.AddedDate));
 
                 return newsCommentDTOs;
             }

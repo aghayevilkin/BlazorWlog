@@ -1,0 +1,93 @@
+﻿@inject ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@inject IAccountService accountService
+
+<div class="col-md-12">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-0"> Full Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    @UserDetails.Name @UserDetails.Surname
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    @UserDetails.Email
+                </div>
+            </div>
+            <hr>
+            @if (UserDetails.Profision != null && UserDetails.Profision != "")
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Profision</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        @UserDetails.Profision
+                    </div>
+                </div>
+                <hr>
+            }
+
+            @if (UserDetails.Adress != null && UserDetails.Adress != "")
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Address</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        @UserDetails.Adress
+                    </div>
+                </div>
+                <hr>
+            }
+            @if (UserDetails.About != null && UserDetails.About != "")
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">About</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        @UserDetails.About
+                    </div>
+                </div>
+                <hr>
+            }
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-info" href="@($"account/edit")">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="mb-4">
+</div>
+
+@code {
+
+    public bool IsProcessing { get; set; } = false;
+
+    public UserDTO UserDetails { get; set; } = new UserDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+
+        IsProcessing = true;
+        UserDetails = await accountService.USerDetails(userInfo.Id);
+        IsProcessing = false;
+    }
+
+
+}

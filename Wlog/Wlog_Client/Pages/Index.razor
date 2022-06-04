@@ -3,6 +3,7 @@
 @inject ILocalStorageService localStorage
 @inject NavigationManager navigationManager
 @inject INewsService newsService
+@inject INewsCommentService newsCommentService
 @using Wlog_Client.Pages.News
 
 @if (IsProcessing)
@@ -37,7 +38,7 @@ else
                                            href="@($"news/category/{item.Category.NewsCategory.Id}")">@item.Category.NewsCategory.Name</a>
                                         <span class="blog-slider__code">@item.AddedDate.ToString("dd MMM yyyy")</span>
                                     </div>
-                            
+
                                     <div class="blog-slider__title">@item.Title</div>
                                     <div class="blog-slider__text">@((MarkupString)(item.Details != null && item.Details.Length > 150 ? item.Details.Substring(0, 250) + "..." : item.Details)) </div>
                                     <a href="@($"news/details/{item.Id}")" class="blog-slider__button">READ MORE</a>
@@ -45,8 +46,8 @@ else
                             </div>
                         }
 
-                        
-                        
+
+
 
                     </div>
                     <div class="blog-slider__pagination"></div>
@@ -54,58 +55,26 @@ else
             </div>
             <div class="col-lg-5 px-0">
                 <div class="row mx-0">
-                    <div class="col-md-6 px-0">
-                        <div class="position-relative overflow-hidden" style="height: 250px;">
-                            <img class="img-fluid w-100 h-100" src="img/news-700x435-1.jpg" style="object-fit: cover;">
-                            <div class="overlay">
-                                <div class="mb-2">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                       href="">Business</a>
-                                    <a class="text-white" href=""><small>Jan 01, 2045</small></a>
+                    @foreach (var item in News.Skip(3).Take(4))
+                    {
+                        <div class="col-md-6 px-0">
+                            <div class="position-relative overflow-hidden" style="height: 250px;">
+                                @foreach (var img in item.NewsImages)
+                                {
+                                    <img class="img-fluid w-100 h-100" src="@img.NewsImageUrl" style="object-fit: cover;">
+                                }
+                                <div class="overlay">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                           href="@($"news/category/{item.Category.NewsCategory.Id}")">@item.Category.NewsCategory.Name</a>
+                                        <a class="text-white" href=""><small>@item.AddedDate.ToString("dd MMM yyyy")</small></a>
+                                    </div>
+                                    <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="@($"news/details/{item.Id}")">@((MarkupString)(item.Details != null && item.Details.Replace("h2", "p").Length > 50 ? item.Details.Replace("h2", "p").Substring(0, 50) + "..." : item.Details.Replace("h2", "p")))</a>
                                 </div>
-                                <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit...</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 px-0">
-                        <div class="position-relative overflow-hidden" style="height: 250px;">
-                            <img class="img-fluid w-100 h-100" src="img/news-700x435-2.jpg" style="object-fit: cover;">
-                            <div class="overlay">
-                                <div class="mb-2">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                       href="">Business</a>
-                                    <a class="text-white" href=""><small>Jan 01, 2045</small></a>
-                                </div>
-                                <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit...</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 px-0">
-                        <div class="position-relative overflow-hidden" style="height: 250px;">
-                            <img class="img-fluid w-100 h-100" src="img/news-700x435-3.jpg" style="object-fit: cover;">
-                            <div class="overlay">
-                                <div class="mb-2">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                       href="">Business</a>
-                                    <a class="text-white" href=""><small>Jan 01, 2045</small></a>
-                                </div>
-                                <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit...</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 px-0">
-                        <div class="position-relative overflow-hidden" style="height: 250px;">
-                            <img class="img-fluid w-100 h-100" src="img/news-700x435-4.jpg" style="object-fit: cover;">
-                            <div class="overlay">
-                                <div class="mb-2">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                       href="">Business</a>
-                                    <a class="text-white" href=""><small>Jan 01, 2045</small></a>
-                                </div>
-                                <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit...</a>
-                            </div>
-                        </div>
-                    </div>
+                    }
+
                 </div>
             </div>
         </div>
@@ -134,7 +103,7 @@ else
 
 
     <!-- Featured News Slider Start -->
-    <div class="container-fluid pt-5 mb-3">
+    @*<div class="container-fluid pt-5 mb-3">
         <div class="container">
             <div class="section-title">
                 <h4 class="m-0 text-uppercase font-weight-bold">Featured News</h4>
@@ -197,7 +166,7 @@ else
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <!-- Featured News Slider End -->
 
 
@@ -241,7 +210,7 @@ else
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <small class="ml-3"><i class="far fa-eye mr-2"></i>@context.ViewCount</small>
-                                                <small class="ml-3"><i class="far fa-comment mr-2"></i>123</small>
+                                                <small class="ml-3"><i class="far fa-comment mr-2"></i>@CommentList.Where(x => x.NewsId == context.Id).Count()</small>
                                             </div>
                                         </div>
                                     </div>
@@ -250,37 +219,22 @@ else
 
                         }
 
-                    <div class="col-lg-12 mb-3">
-                        @if (News.Count() > 6)
-                        {
-
-                        <button class="button @Loadingmore" @onclick="@TakeLoadClick">
-                            @if (IsLoading)
+                        <div class="col-lg-12 mb-3">
+                            @if (News.Count() > 6)
                             {
-                                <span class="spinner"></span>
-                            }
-                            @LoadText
-                        </button>
-                            
 
-                        }
-                        @*<nav aria-label="...">
-            <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" @onclick="TestPage" >Next</a>
-                </li>
-            </ul>
-        </nav>*@
-                        @*<a href=""><img class="img-fluid w-100" src="img/ads-728x90.png" alt=""></a>*@
-                    </div>
+                                <button class="button @Loadingmore" @onclick="@TakeLoadClick">
+                                    @if (IsLoading)
+                                    {
+                                        <span class="spinner"></span>
+                                    }
+                                    @LoadText
+                                </button>
+
+
+                            }
+                           
+                        </div>
                     </div>
                 </div>
 
@@ -297,11 +251,12 @@ else
 
     public int TakeLoad { get; set; } = 6;
     public string Loadingmore { get; set; } = "";
-    public string LoadText { get; set; } = "Load More";
+    public string LoadText { get; set; } = "Daha çox yüklə";
 
     NewsPaginationDTO NewsPagingModel = new NewsPaginationDTO();
 
     public IEnumerable<NewsDTO> News { get; set; } = new List<NewsDTO>();
+    public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
     public bool IsProcessing { get; set; } = false;
     public bool IsLoading { get; set; } = false;
 
@@ -309,6 +264,7 @@ else
     {
         IsProcessing = true;
         News = await newsService.GetNews();
+        CommentList = await newsCommentService.GetNewsComment();
         IsProcessing = false;
     }
 
@@ -319,7 +275,7 @@ else
         await Task.Delay(1000);
         TakeLoad = TakeLoad + 6;
         IsLoading = false;
-        LoadText = "Load More";
+        LoadText = "Daha çox yüklə";
     }
 
 

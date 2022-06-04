@@ -79,6 +79,8 @@ namespace Wlog_Api
             services.AddScoped<INewsCategoryRepository, NewsCategoryRepository>();
             services.AddScoped<ISubscribeRepository, SubscribeRepository>();
             services.AddScoped<INewsCommentRepository, NewsCommentRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             services.AddCors(o => o.AddPolicy("Wlog", builder => {
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();

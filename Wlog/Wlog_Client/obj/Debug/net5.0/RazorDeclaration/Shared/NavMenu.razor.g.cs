@@ -145,6 +145,20 @@ using MudBlazor;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 20 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.News;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 21 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.ModelVM;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -153,15 +167,22 @@ using MudBlazor;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 54 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Shared\NavMenu.razor"
+#line 99 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Shared\NavMenu.razor"
        
-    
+
     public IEnumerable<NewsCategoryDTO> NewsCategoryList { get; set; } = new List<NewsCategoryDTO>();
+    public UserDTO UserDetails { get; set; } = new UserDTO();
+    public UserRoleDTO UserRole { get; set; } = new UserRoleDTO();
 
 
     protected override async Task OnInitializedAsync()
     {
         NewsCategoryList = await newsCategoryService.GetAllCategory();
+        var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+
+        UserDetails = await accountService.USerDetails(userInfo.Id);
+        UserRole = await accountService.USerRole(userInfo.Id);
     }
 
 
@@ -170,7 +191,9 @@ using MudBlazor;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAccountService accountService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCategoryService newsCategoryService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILocalStorageService localStorage { get; set; }
     }
 }
 #pragma warning restore 1591

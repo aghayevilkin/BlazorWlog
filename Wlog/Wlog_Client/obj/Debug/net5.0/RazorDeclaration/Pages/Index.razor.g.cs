@@ -146,7 +146,14 @@ using MudBlazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+#line 21 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.ModelVM;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 7 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
 using Wlog_Client.Pages.News;
 
 #line default
@@ -161,16 +168,17 @@ using Wlog_Client.Pages.News;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 296 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+#line 250 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
       
 
     public int TakeLoad { get; set; } = 6;
     public string Loadingmore { get; set; } = "";
-    public string LoadText { get; set; } = "Load More";
+    public string LoadText { get; set; } = "Daha çox yüklə";
 
     NewsPaginationDTO NewsPagingModel = new NewsPaginationDTO();
 
     public IEnumerable<NewsDTO> News { get; set; } = new List<NewsDTO>();
+    public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
     public bool IsProcessing { get; set; } = false;
     public bool IsLoading { get; set; } = false;
 
@@ -178,6 +186,7 @@ using Wlog_Client.Pages.News;
     {
         IsProcessing = true;
         News = await newsService.GetNews();
+        CommentList = await newsCommentService.GetNewsComment();
         IsProcessing = false;
     }
 
@@ -188,7 +197,7 @@ using Wlog_Client.Pages.News;
         await Task.Delay(1000);
         TakeLoad = TakeLoad + 6;
         IsLoading = false;
-        LoadText = "Load More";
+        LoadText = "Daha çox yüklə";
     }
 
 
@@ -203,6 +212,7 @@ using Wlog_Client.Pages.News;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCommentService newsCommentService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILocalStorageService localStorage { get; set; }

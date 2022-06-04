@@ -1,0 +1,74 @@
+﻿@page "/account"
+@inject ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@inject IAccountService accountService
+
+
+<link href="css/account.css" rel="stylesheet" />
+@if (UserDetails == null || UserRole == null)
+{
+    <div class="loading">
+        <div class="fl spinner7 loader-gif"><p style="color: #fff;width: 510px;font-size: 20px;line-height: 1.2em;margin-left: -210px;margin-bottom: 40px;">Loading</p><div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div></div>
+    </div>
+}
+else
+{
+    <div class="container padding-bottom-3x mb-2">
+        <div class="row">
+            <div class="col-lg-4">
+                <aside class="user-info-wrapper">
+                    <div class="user-cover" style="background-image: url(https://bootdey.com/img/Content/bg1.jpg);">
+                        <div class="info-label" data-toggle="tooltip" title="" data-original-title="You currently have 290 Reward Points to spend"><i class="icon-medal"></i>290 points</div>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <a class="edit-avatar" href="#"></a><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User">
+                        </div>
+                        <div class="user-data">
+                            <h4>@UserDetails.Name @UserDetails.Surname </h4>
+                            <h3>@UserRole.Name</h3>
+                            <span>Joined February 06, 2017</span>
+                        </div>
+                    </div>
+                </aside>
+                <nav class="list-group">
+                    <a class="list-group-item with-badge" href="#"><i class=" fa fa-th"></i>Orders<span class="badge badge-primary badge-pill">6</span></a>
+                    <a class="list-group-item active" href="#"><i class="fa fa-user"></i>Profile</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Addresses</a>
+                    <a class="list-group-item with-badge" href="#"><i class="fa fa-heart"></i>Wishlist<span class="badge badge-primary badge-pill">3</span></a>
+                    <a class="list-group-item with-badge" href="#"><i class="fa fa-tag"></i>My Tickets<span class="badge badge-primary badge-pill">4</span></a>
+                </nav>
+            </div>
+            <div class="col-lg-8">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!-- Profile-->
+                <Profile></Profile>
+                
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@code {
+
+    public bool IsProcessing { get; set; } = false;
+
+    public UserDTO UserDetails { get; set; } = new UserDTO();
+    public UserRoleDTO UserRole { get; set; } = new UserRoleDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+
+        IsProcessing = true;
+        UserDetails = await accountService.USerDetails(userInfo.Id);
+        UserRole = await accountService.USerRole(userInfo.Id);
+        IsProcessing = false;
+    }
+    
+
+}

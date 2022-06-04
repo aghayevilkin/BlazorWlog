@@ -766,3 +766,11 @@ C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pa
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\News\NewsRightSide.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Shared\Pagination.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Shared\Pagination.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\Contact\Contact.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Contact\Contact.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\Account\Account.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Account\Account.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\Account\Profile.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Account\Profile.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\Account\Edit.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Account\Edit.razor.g.cs
