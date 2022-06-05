@@ -19,6 +19,7 @@ namespace Models
         public string PhoneNo { get; set; }
         public string Adress { get; set; }
         public string About { get; set; }
+        public string Images { get; set; }
         public string Role { get; set; }
         public bool IsVerify { get; set; }
     }

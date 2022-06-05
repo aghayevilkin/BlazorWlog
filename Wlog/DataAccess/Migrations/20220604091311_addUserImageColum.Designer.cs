@@ -4,14 +4,16 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220604091311_addUserImageColum")]
+    partial class addUserImageColum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,6 +266,26 @@ namespace DataAccess.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("TagToNews");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.UserImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -598,6 +620,15 @@ namespace DataAccess.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("DataAccess.Data.UserImage", b =>
+                {
+                    b.HasOne("DataAccess.Data.CustomUser", "CustomUser")
+                        .WithMany("UserImages")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("CustomUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -673,6 +704,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Data.NewsTag", b =>
                 {
                     b.Navigation("TagToNews");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.CustomUser", b =>
+                {
+                    b.Navigation("UserImages");
                 });
 #pragma warning restore 612, 618
         }

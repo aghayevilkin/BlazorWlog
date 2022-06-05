@@ -159,6 +159,13 @@ using Wlog_Client.ModelVM;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/logout")]
     public partial class Logout : Microsoft.AspNetCore.Components.ComponentBase
     {

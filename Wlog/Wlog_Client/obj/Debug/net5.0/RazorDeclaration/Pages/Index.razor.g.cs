@@ -153,6 +153,13 @@ using Wlog_Client.ModelVM;
 #line hidden
 #nullable disable
 #nullable restore
+#line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 7 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
 using Wlog_Client.Pages.News;
 
@@ -168,7 +175,7 @@ using Wlog_Client.Pages.News;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 250 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+#line 260 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
       
 
     public int TakeLoad { get; set; } = 6;

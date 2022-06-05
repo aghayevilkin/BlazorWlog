@@ -36,11 +36,11 @@ namespace Wlog_Client.Pages.Authentication
                 ReturnUrl = queryParam["returnUrl"];
                 if (string.IsNullOrEmpty(ReturnUrl))
                 {
-                    navigationManager.NavigateTo("/");
+                    navigationManager.NavigateTo("/",true);
                 }
                 else
                 {
-                    navigationManager.NavigateTo("/" + ReturnUrl);
+                    navigationManager.NavigateTo("/" + ReturnUrl,true);
                 }
             }
             else

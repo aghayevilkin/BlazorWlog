@@ -159,6 +159,13 @@ using Wlog_Client.ModelVM;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/account/edit")]
     public partial class Edit : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -168,7 +175,7 @@ using Wlog_Client.ModelVM;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 69 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Edit.razor"
+#line 86 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Edit.razor"
        
 
     public bool IsProcessing { get; set; } = false;
@@ -190,10 +197,27 @@ using Wlog_Client.ModelVM;
     {
         await accountService.UpdateUser(UserDetails);
 
+        await localStorage.SetItemAsync(SD.Local_UserDetails, UserDetails);
+
         await jsRuntime.ToastrSuccess("Updated");
 
-        navigationManager.NavigateTo("account");
+        navigationManager.NavigateTo("account", true);
 
+    }
+
+
+
+    private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
+    {
+        //get the file
+        var file = inputFileChangeEvent.File;
+
+        //read that file in a byte array
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream(1512000).ReadAsync(buffer);
+
+        //convert byte array to base 64 string
+        UserDetails.Images = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
     }
 
 

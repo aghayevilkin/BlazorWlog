@@ -159,6 +159,13 @@ using Wlog_Client.ModelVM;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -167,7 +174,7 @@ using Wlog_Client.ModelVM;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 99 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Shared\NavMenu.razor"
+#line 107 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Shared\NavMenu.razor"
        
 
     public IEnumerable<NewsCategoryDTO> NewsCategoryList { get; set; } = new List<NewsCategoryDTO>();
@@ -178,11 +185,31 @@ using Wlog_Client.ModelVM;
     protected override async Task OnInitializedAsync()
     {
         NewsCategoryList = await newsCategoryService.GetAllCategory();
-        var userInfo = await localStorage.GetItemAsync<UserDTO>
+
+        
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 118 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Shared\NavMenu.razor"
+         if (await localStorage.GetItemAsync<UserDTO>
+               (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
                 (SD.Local_UserDetails);
 
-        UserDetails = await accountService.USerDetails(userInfo.Id);
-        UserRole = await accountService.USerRole(userInfo.Id);
+            UserDetails = await accountService.USerDetails(userInfo.Id);
+            UserRole = await accountService.USerRole(userInfo.Id);
+        }
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 126 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Shared\NavMenu.razor"
+         
+        
     }
 
 

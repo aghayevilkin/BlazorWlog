@@ -159,6 +159,13 @@ using Wlog_Client.ModelVM;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/account")]
     public partial class Account : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -168,7 +175,7 @@ using Wlog_Client.ModelVM;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 55 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Account.razor"
+#line 64 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Account.razor"
        
 
     public bool IsProcessing { get; set; } = false;

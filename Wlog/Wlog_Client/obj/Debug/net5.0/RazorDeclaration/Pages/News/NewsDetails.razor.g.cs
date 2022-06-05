@@ -160,6 +160,13 @@ using Wlog_Client.ModelVM;
 #line hidden
 #nullable disable
 #nullable restore
+#line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 9 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
 using System.Threading;
 
@@ -175,7 +182,7 @@ using System.Threading;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 175 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
+#line 201 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
        
     [Parameter]
     public int? Id { get; set; }

@@ -21,9 +21,7 @@ namespace DataAccess.Data
         public string Profision { get; set; }
         public string About { get; set; }
         public string Adress { get; set; }
-
-
-        public virtual ICollection<UserImage> UserImages { get; set; }
+        public string Images { get; set; }
 
     }
 }

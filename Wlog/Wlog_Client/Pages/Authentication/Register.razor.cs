@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wlog_Client.Helper;
 using Wlog_Client.Service.IService;
 
 namespace Wlog_Client.Pages.Authentication
@@ -21,6 +23,9 @@ namespace Wlog_Client.Pages.Authentication
         [Inject]
         public NavigationManager navigationManager { get; set; }
 
+        [Inject]
+        public IJSRuntime jsRuntime { get; set; }
+
 
         private async Task RegisterUser()
         {
@@ -30,6 +35,7 @@ namespace Wlog_Client.Pages.Authentication
             if (result.IsRegisterationSuccessful)
             {
                 IsProcessing = false;
+                await jsRuntime.ToastrSuccess("Qediyyatdan keçdiniz");
                 navigationManager.NavigateTo("/login");
             }
             else

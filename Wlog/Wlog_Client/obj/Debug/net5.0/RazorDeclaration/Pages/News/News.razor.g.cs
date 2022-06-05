@@ -159,6 +159,13 @@ using Wlog_Client.ModelVM;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/news")]
     [Microsoft.AspNetCore.Components.RouteAttribute("/news/category/{id:int}")]
     public partial class News : Microsoft.AspNetCore.Components.ComponentBase
@@ -169,7 +176,7 @@ using Wlog_Client.ModelVM;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 79 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\News.razor"
+#line 87 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\News.razor"
        
     [Parameter]
     public int Id { get; set; }

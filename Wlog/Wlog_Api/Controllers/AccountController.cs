@@ -59,7 +59,7 @@ namespace Wlog_Api.Controllers
                 UserName = userRequestDTO.Email,
                 Email = userRequestDTO.Email,
                 Name = userRequestDTO.Name,
-                PhoneNumber = userRequestDTO.PhoneNo,
+                Surname = userRequestDTO.Surname,
                 EmailConfirmed = true
             };
 

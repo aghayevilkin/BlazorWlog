@@ -19,21 +19,30 @@ else
             <div class="col-lg-4">
                 <aside class="user-info-wrapper">
                     <div class="user-cover" style="background-image: url(https://bootdey.com/img/Content/bg1.jpg);">
-                        <div class="info-label" data-toggle="tooltip" title="" data-original-title="You currently have 290 Reward Points to spend"><i class="icon-medal"></i>290 points</div>
                     </div>
                     <div class="user-info">
                         <div class="user-avatar">
-                            <a class="edit-avatar" href="#"></a><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User">
+                            @if (UserRole.Name == "Admin")
+                            {
+                                <img src="img/verification.png" alt="Verification" class="edit-avatar" />
+                            }
+                            @if (UserDetails.Images != null)
+                            {
+                                <img src="@UserDetails.Images" alt="User">
+                            }
+                            else
+                            {
+                                <img src="img/avatar.png" alt="User">
+                            }
+
                         </div>
                         <div class="user-data">
                             <h4>@UserDetails.Name @UserDetails.Surname </h4>
-                            <h3>@UserRole.Name</h3>
-                            <span>Joined February 06, 2017</span>
+                            <span>@UserDetails.Profision</span>
                         </div>
                     </div>
                 </aside>
                 <nav class="list-group">
-                    <a class="list-group-item with-badge" href="#"><i class=" fa fa-th"></i>Orders<span class="badge badge-primary badge-pill">6</span></a>
                     <a class="list-group-item active" href="#"><i class="fa fa-user"></i>Profile</a>
                     <a class="list-group-item" href="#"><i class="fa fa-map"></i>Addresses</a>
                     <a class="list-group-item with-badge" href="#"><i class="fa fa-heart"></i>Wishlist<span class="badge badge-primary badge-pill">3</span></a>

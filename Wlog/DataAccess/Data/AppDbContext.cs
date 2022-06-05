@@ -17,7 +17,6 @@ namespace DataAccess.Data
         }
 
         public DbSet<CustomUser> CustomUser { get; set; }
-        public DbSet<UserImage> UserImages { get; set; }
 
         public DbSet<News> News { get; set; }
         public DbSet<NewsImage> NewsImages { get; set; }
