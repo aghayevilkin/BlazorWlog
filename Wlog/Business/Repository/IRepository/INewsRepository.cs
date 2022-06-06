@@ -12,6 +12,8 @@ namespace Business.Repository.IRepository
         public Task<NewsDTO> CreateNews(NewsDTO newsDTO);
         public Task<NewsDTO> UpdateNews(int newsId, NewsDTO newsDTO);
         public Task<NewsDTO> GetNews(int newsId);
+        public Task<SavedNewsDTO> AddToSavedNews(SavedNewsDTO savedNewsDTO);
+        public Task<SavedNewsDTO> RemoveToSavedNews(SavedNewsDTO savedNewsDTO);
         public Task<int> DeleteNews(int newsId);
         public Task<IEnumerable<NewsDTO>> GetAllNews();
         public Task<NewsDTO> IsNewsUnique(string name, int newsId = 0);

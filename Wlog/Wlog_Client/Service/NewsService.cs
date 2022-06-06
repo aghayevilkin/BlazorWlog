@@ -70,5 +70,28 @@ namespace Wlog_Client.Service
             }
 
         }
+
+
+
+        public async Task<SavedNewsDTO> AddToSavedNews(SavedNewsDTO savedNewsDTO)
+        {
+            var content = JsonConvert.SerializeObject(savedNewsDTO);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("/news/AddToSavedNews", bodyContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<SavedNewsDTO>(contentTemp);
+                return result;
+            }
+            else
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var errorModel = JsonConvert.DeserializeObject<ErrorModel>(contentTemp);
+                throw new Exception(errorModel.ErrorMessage);
+            }
+        }
+
+        
     }
 }

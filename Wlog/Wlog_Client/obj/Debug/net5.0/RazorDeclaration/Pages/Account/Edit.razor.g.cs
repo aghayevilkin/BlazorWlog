@@ -146,13 +146,6 @@ using MudBlazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 20 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
-using Wlog_Client.Pages.News;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
 #line 21 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.ModelVM;
 
@@ -162,6 +155,13 @@ using Wlog_Client.ModelVM;
 #nullable restore
 #line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 23 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.News;
 
 #line default
 #line hidden

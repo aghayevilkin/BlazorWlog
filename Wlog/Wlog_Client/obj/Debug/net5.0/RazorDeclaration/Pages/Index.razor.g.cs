@@ -160,7 +160,7 @@ using System.Globalization;
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+#line 23 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.Pages.News;
 
 #line default
@@ -175,22 +175,33 @@ using Wlog_Client.Pages.News;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 260 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
+#line 258 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Index.razor"
       
 
     public int TakeLoad { get; set; } = 6;
     public string Loadingmore { get; set; } = "";
     public string LoadText { get; set; } = "Daha çox yüklə";
+    public string USerID { get; set; }
 
     NewsPaginationDTO NewsPagingModel = new NewsPaginationDTO();
 
     public IEnumerable<NewsDTO> News { get; set; } = new List<NewsDTO>();
     public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
+    public SavedNewsDTO SavedNews { get; set; } = new SavedNewsDTO();
     public bool IsProcessing { get; set; } = false;
     public bool IsLoading { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) !=null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            USerID = userInfo.Id;
+        }
+
+
         IsProcessing = true;
         News = await newsService.GetNews();
         CommentList = await newsCommentService.GetNewsComment();
@@ -207,6 +218,26 @@ using Wlog_Client.Pages.News;
         LoadText = "Daha çox yüklə";
     }
 
+    private async Task SavedNewsClicked(int newsId)
+    {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            SavedNews.UserId = userInfo.Id;
+            SavedNews.NewsId = newsId;
+
+
+            await newsService.AddToSavedNews(SavedNews);
+
+            IsProcessing = true;
+            News = await newsService.GetNews();
+            CommentList = await newsCommentService.GetNewsComment();
+            IsProcessing = false;
+
+        }
+    }
 
 
     protected async override Task OnAfterRenderAsync(bool firstRender)

@@ -4,7 +4,6 @@
 @inject NavigationManager navigationManager
 @inject INewsService newsService
 @inject INewsCommentService newsCommentService
-@using Wlog_Client.Pages.News
 
 @if (IsProcessing)
 {
@@ -88,12 +87,6 @@ else
             <div class="row align-items-center bg-dark">
                 <div class="col-12">
                     <div class="d-flex justify-content-between">
-                        <div class="bg-primary text-dark text-center font-weight-medium py-2" style="width: 170px;">Breaking News</div>
-                        <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center ml-3"
-                             style="width: calc(100% - 170px); padding-right: 90px;">
-                            <div class="text-truncate"><a class="text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales</a></div>
-                            <div class="text-truncate"><a class="text-white text-uppercase font-weight-semi-bold" href="">Lorem ipsum dolor sit amet elit. Proin interdum lacus eget ante tincidunt, sed faucibus nisl sodales</a></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -183,44 +176,49 @@ else
                         </div>
                         @if (News != null)
                         {
-                            foreach (var context in News.Take(TakeLoad))
+                            foreach (var item in News.Take(TakeLoad))
                             {
                                 <div class="col-lg-6">
                                     <div class="position-relative mb-3">
-                                        @foreach (var img in context.NewsImages.Take(1))
+                                        @foreach (var img in item.NewsImages.Take(1))
                                         {
                                             <img class="img-fluid w-100" src="@img.NewsImageUrl" style="object-fit: cover; height: 14.375rem;" alt="">
                                         }
                                         <div class="bg-white border border-top-0 p-4">
                                             <div class="mb-2">
                                                 <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                                   href="@($"news/details/{context.Id}")">@context.Category.NewsCategory.Name </a>
+                                                   href="@($"news/details/{item.Id}")">@item.Category.NewsCategory.Name </a>
                                                 @{
                                                     var gerCult = CultureInfo.CreateSpecificCulture("aze-az");
                                                 }
-                                                <a class="text-body" href=""><small>@context.AddedDate.ToString("dd MMM yyyy", gerCult)</small></a>
+                                                <a class="text-body" href=""><small>@item.AddedDate.ToString("dd MMM yyyy", gerCult)</small></a>
                                             </div>
-                                            <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="@($"news/details/{context.Id}")">@context.Title</a>
+                                            <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="@($"news/details/{item.Id}")">@item.Title</a>
                                             <p class="m-0">
-                                                @((MarkupString)(context.Details != null && context.Details.Length > 150 ? context.Details.Substring(0, 250) + "..." : context.Details))
+                                                @((MarkupString)(item.Details != null && item.Details.Length > 150 ? item.Details.Substring(0, 250) + "..." : item.Details))
                                             </p>
                                         </div>
                                         <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
                                             <div class="d-flex align-items-center">
-                                                @if (context.User.Images != null)
+                                                @if (item.User.Images != null)
                                                 {
-                                                    <img class="rounded-circle mr-2" src="@context.User.Images" width="25" height="25" alt="">
+                                                    <img class="rounded-circle mr-2" src="@item.User.Images" width="25" height="25" alt="">
                                                 }
                                                 else
                                                 {
                                                     <img class="rounded-circle mr-2" src="img/avatar.png" width="25" height="25" alt="">
                                                 }
 
-                                                <small>@context.User.Name @context.User.Surname</small>
+                                                <small>@item.User.Name @item.User.Surname</small>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <small class="ml-3"><i class="far fa-eye mr-2"></i>@context.ViewCount</small>
-                                                <small class="ml-3"><i class="far fa-comment mr-2"></i>@CommentList.Where(x => x.NewsId == context.Id).Count()</small>
+                                                <small class="ml-3"><i class="far fa-eye mr-2"></i>@item.ViewCount</small>
+                                                <small class="ml-3"><i class="far fa-comment mr-2"></i>@CommentList.Where(x => x.NewsId == item.Id).Count()</small>
+                                                <AuthorizeView>
+                                                    <Authorized>
+                                                        <small class="ml-3" style="cursor: pointer; color: #FFCC00;" @onclick="()=>SavedNewsClicked(Convert.ToInt32(item.Id))"><i class="@(item.SavedNews.Any(s=>s.UserId==USerID)==true?"fas added":"far") fa-bookmark fa-2x blog-bookmarked"></i></small>
+                                                    </Authorized>
+                                                </AuthorizeView>
                                             </div>
                                         </div>
                                     </div>
@@ -262,16 +260,27 @@ else
     public int TakeLoad { get; set; } = 6;
     public string Loadingmore { get; set; } = "";
     public string LoadText { get; set; } = "Daha çox yüklə";
+    public string USerID { get; set; }
 
     NewsPaginationDTO NewsPagingModel = new NewsPaginationDTO();
 
     public IEnumerable<NewsDTO> News { get; set; } = new List<NewsDTO>();
     public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
+    public SavedNewsDTO SavedNews { get; set; } = new SavedNewsDTO();
     public bool IsProcessing { get; set; } = false;
     public bool IsLoading { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) !=null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            USerID = userInfo.Id;
+        }
+
+
         IsProcessing = true;
         News = await newsService.GetNews();
         CommentList = await newsCommentService.GetNewsComment();
@@ -288,6 +297,26 @@ else
         LoadText = "Daha çox yüklə";
     }
 
+    private async Task SavedNewsClicked(int newsId)
+    {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            SavedNews.UserId = userInfo.Id;
+            SavedNews.NewsId = newsId;
+
+
+            await newsService.AddToSavedNews(SavedNews);
+
+            IsProcessing = true;
+            News = await newsService.GetNews();
+            CommentList = await newsCommentService.GetNewsComment();
+            IsProcessing = false;
+
+        }
+    }
 
 
     protected async override Task OnAfterRenderAsync(bool firstRender)

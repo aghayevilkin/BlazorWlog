@@ -101,5 +101,23 @@ namespace Wlog_Api.Controllers
 
 
 
+
+        [HttpPost("AddToSavedNews")]
+        public async Task<IActionResult> AddToSavedNews([FromBody] SavedNewsDTO savedNewsDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _newsRepository.AddToSavedNews(savedNewsDTO);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    ErrorMessage = "Error while creating Saved News"
+                });
+            }
+        }
+
     }
 }

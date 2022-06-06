@@ -166,6 +166,13 @@ using System.Globalization;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 23 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.News;
+
+#line default
+#line hidden
+#nullable disable
     public partial class _Imports : System.Object
     {
         #pragma warning disable 1998

@@ -5,6 +5,7 @@
 @inject IJSRuntime jsRuntime
 @inject INewsCategoryService newsCategoryService
 @inject INewsService newsService
+@inject INewsCommentService newsCommentService
 <!-- News With Sidebar Start -->
 <div class="container-fluid mt-5 pt-3">
     <div class="container">
@@ -22,7 +23,7 @@
 
 
 
-                    <MudTable Items="@NewsModel.Where(x=>x.Category.NewsCategory.Id == NewsCategoryModel.Id)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"  Filter="new Func<NewsDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
+                    <MudTable Items="@NewsModel.Where(x=>x.Category.NewsCategory.Id == NewsCategoryModel.Id)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<NewsDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
 
                         <RowTemplate>
 
@@ -58,7 +59,12 @@
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <small class="ml-3"><i class="far fa-eye mr-2"></i>@context.ViewCount</small>
-                                            <small class="ml-3"><i class="far fa-comment mr-2"></i>123</small>
+                                            <small class="ml-3"><i class="far fa-comment mr-2"></i>@CommentList.Where(x => x.NewsId == context.Id).Count()</small>
+                                            <AuthorizeView>
+                                                <Authorized Context="News">
+                                                    <small class="ml-3" style="cursor: pointer; color: #FFCC00;" @onclick="()=>SavedNewsClicked(Convert.ToInt32(context.Id))"><i class="@(context.SavedNews.Any(s=>s.UserId==USerID)==true?"fas added":"far") fa-bookmark fa-2x blog-bookmarked"></i></small>
+                                                </Authorized>
+                                            </AuthorizeView>
                                         </div>
                                     </div>
                                 </div>
@@ -91,6 +97,8 @@
     [Parameter]
     public string Url { get; set; }
 
+    public string USerID { get; set; }
+
     private bool dense = false;
     private bool hover = true;
     private bool striped = false;
@@ -101,8 +109,10 @@
     private HashSet<NewsDTO> selectedItems = new HashSet<NewsDTO>();
 
     public NewsCategoryDTO NewsCategoryModel { get; set; } = new NewsCategoryDTO();
+    public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
 
     public IEnumerable<NewsDTO> NewsModel { get; set; } = new List<NewsDTO>();
+    public SavedNewsDTO SavedNews { get; set; } = new SavedNewsDTO();
 
 
     public bool IsProcessing { get; set; } = false;
@@ -110,7 +120,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            USerID = userInfo.Id;
+        }
 
         navigationManager.LocationChanged += (o, e) =>
         {
@@ -122,10 +138,30 @@
 
         IsProcessing = true;
         NewsModel = await newsService.GetNews();
+        CommentList = await newsCommentService.GetNewsComment();
         IsProcessing = false;
     }
 
+    private async Task SavedNewsClicked(int newsId)
+    {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            SavedNews.UserId = userInfo.Id;
+            SavedNews.NewsId = newsId;
 
+
+            await newsService.AddToSavedNews(SavedNews);
+
+            IsProcessing = true;
+            NewsModel = await newsService.GetNews();
+            CommentList = await newsCommentService.GetNewsComment();
+            IsProcessing = false;
+
+        }
+    }
 
     private bool FilterFunc1(NewsDTO element) => FilterFunc(element, searchString1);
 

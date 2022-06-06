@@ -65,7 +65,7 @@ namespace Business.Repository
             {
                 IEnumerable<NewsDTO> newsDTOs =
                             _mapper.Map<IEnumerable<News>, IEnumerable<NewsDTO>>
-                            (_db.News.Include(x => x.NewsImages).Include(u=>u.User).Include(c=>c.Category).ThenInclude(s=>s.NewsCategory).OrderByDescending(x => x.AddedDate));
+                            (_db.News.Include(x => x.NewsImages).Include(u=>u.User).Include(c=>c.Category).ThenInclude(s=>s.NewsCategory).Include(x=>x.SavedNews).OrderByDescending(x => x.AddedDate));
 
                 return newsDTOs;
             }
@@ -85,7 +85,7 @@ namespace Business.Repository
                 await _db.SaveChangesAsync();
 
                 NewsDTO news = _mapper.Map<News, NewsDTO>(
-                    await _db.News.Include(x => x.NewsImages).Include(x=>x.User).Include(c => c.Category).ThenInclude(s => s.NewsCategory).FirstOrDefaultAsync(x => x.Id == newsId));
+                    await _db.News.Include(x => x.NewsImages).Include(x=>x.User).Include(c => c.Category).ThenInclude(s => s.NewsCategory).Include(x=>x.SavedNews).FirstOrDefaultAsync(x => x.Id == newsId));
 
                 
 
@@ -180,5 +180,45 @@ namespace Business.Repository
 
         }
 
+        public async Task<SavedNewsDTO> AddToSavedNews(SavedNewsDTO savedNewsDTO)
+        {
+            bool isExist = _db.SavedNews.Any(x => x.NewsId == savedNewsDTO.NewsId && x.UserId == savedNewsDTO.UserId);
+            if (!isExist)
+            {
+                SavedNews savedNews = _mapper.Map<SavedNewsDTO, SavedNews>(savedNewsDTO);
+                savedNews.AddedDate = DateTime.Now;
+                var addedSavedNews = await _db.SavedNews.AddAsync(savedNews);
+
+                await _db.SaveChangesAsync();
+                return _mapper.Map<SavedNews, SavedNewsDTO>(addedSavedNews.Entity);
+            }
+            else
+            {
+                SavedNews savedNews = await _db.SavedNews.FirstOrDefaultAsync(x => x.NewsId == savedNewsDTO.NewsId && x.UserId == savedNewsDTO.UserId);
+                var removedSavedNews = _db.SavedNews.Remove(savedNews);
+
+                await _db.SaveChangesAsync();
+                return _mapper.Map<SavedNews, SavedNewsDTO>(removedSavedNews.Entity);
+            }
+            
+        }
+
+        public async Task<SavedNewsDTO> RemoveToSavedNews(SavedNewsDTO savedNewsDTO)
+        {
+            bool isExist = _db.SavedNews.Any(x => x.NewsId == savedNewsDTO.NewsId && x.UserId == savedNewsDTO.UserId);
+            if (isExist)
+            {
+                SavedNews savedNews = await _db.SavedNews.FirstOrDefaultAsync(x => x.NewsId == savedNewsDTO.NewsId && x.UserId == savedNewsDTO.UserId);
+                var removedSavedNews = _db.SavedNews.Remove(savedNews);
+
+                await _db.SaveChangesAsync();
+                return _mapper.Map<SavedNews, SavedNewsDTO>(removedSavedNews.Entity);
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
     }
 }

@@ -146,13 +146,6 @@ using MudBlazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 20 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
-using Wlog_Client.Pages.News;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
 #line 21 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using Wlog_Client.ModelVM;
 
@@ -162,6 +155,13 @@ using Wlog_Client.ModelVM;
 #nullable restore
 #line 22 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
 using System.Globalization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 23 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\_Imports.razor"
+using Wlog_Client.Pages.News;
 
 #line default
 #line hidden
@@ -176,13 +176,15 @@ using System.Globalization;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 87 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\News.razor"
+#line 93 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\News.razor"
        
     [Parameter]
     public int Id { get; set; }
 
     [Parameter]
     public string Url { get; set; }
+
+    public string USerID { get; set; }
 
     private bool dense = false;
     private bool hover = true;
@@ -194,8 +196,10 @@ using System.Globalization;
     private HashSet<NewsDTO> selectedItems = new HashSet<NewsDTO>();
 
     public NewsCategoryDTO NewsCategoryModel { get; set; } = new NewsCategoryDTO();
+    public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
 
     public IEnumerable<NewsDTO> NewsModel { get; set; } = new List<NewsDTO>();
+    public SavedNewsDTO SavedNews { get; set; } = new SavedNewsDTO();
 
 
     public bool IsProcessing { get; set; } = false;
@@ -203,7 +207,13 @@ using System.Globalization;
 
     protected override async Task OnInitializedAsync()
     {
-
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            USerID = userInfo.Id;
+        }
 
         navigationManager.LocationChanged += (o, e) =>
         {
@@ -215,10 +225,30 @@ using System.Globalization;
 
         IsProcessing = true;
         NewsModel = await newsService.GetNews();
+        CommentList = await newsCommentService.GetNewsComment();
         IsProcessing = false;
     }
 
+    private async Task SavedNewsClicked(int newsId)
+    {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            SavedNews.UserId = userInfo.Id;
+            SavedNews.NewsId = newsId;
 
+
+            await newsService.AddToSavedNews(SavedNews);
+
+            IsProcessing = true;
+            NewsModel = await newsService.GetNews();
+            CommentList = await newsCommentService.GetNewsComment();
+            IsProcessing = false;
+
+        }
+    }
 
     private bool FilterFunc1(NewsDTO element) => FilterFunc(element, searchString1);
 
@@ -240,6 +270,7 @@ using System.Globalization;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCommentService newsCommentService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCategoryService newsCategoryService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
