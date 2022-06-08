@@ -23,5 +23,8 @@ namespace DataAccess.Data
         public string Adress { get; set; }
         public string Images { get; set; }
 
+
+        public List<SavedNews> SavedNews { get; set; }
+
     }
 }

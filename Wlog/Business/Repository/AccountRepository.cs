@@ -34,7 +34,7 @@ namespace Business.Repository
             {
                 //var user = _db.CustomUser.Find(id);
                 UserDTO user = _mapper.Map<CustomUser, UserDTO>(
-                    await _db.CustomUser.FirstOrDefaultAsync(x => x.Id == id));
+                    await _db.CustomUser.Include(x=>x.SavedNews).ThenInclude(x=>x.News).FirstOrDefaultAsync(x => x.Id == id));
 
                 return user;
             }

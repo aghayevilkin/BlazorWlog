@@ -1,0 +1,101 @@
+﻿@page "/savednews"
+@inject ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@inject IAccountService accountService
+@inject INewsService newsService
+
+
+<link href="css/account.css" rel="stylesheet" />
+<div class="container padding-bottom-3x mb-2">
+    <div class="row">
+        <CascadingValue Value="ActiveSavedNews" Name="ActiveSavedNews">
+            <Profile></Profile>
+        </CascadingValue>
+
+        @if (UserDetails == null)
+        {
+            <div class="loading">
+                <div class="fl spinner7 loader-gif"><p style="color: #fff;width: 510px;font-size: 20px;line-height: 1.2em;margin-left: -210px;margin-bottom: 40px;">Loading</p><div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div></div>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-8">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!-- Profile-->
+                <div class="col-lg-12 pb-5">
+                    <!-- Item-->
+                    @foreach (var item in NewsList.Where(x=>x.SavedNews.Any(u=>u.UserId == USerId)))
+                    {
+                        <div class="cart-item d-md-flex justify-content-between">
+                            <span class="remove-item" @onclick="()=>SavedNewsClicked(Convert.ToInt32(item.Id))"><i class="fa fa-times"></i></span>
+                            <div class="px-3 my-3">
+                                <a class="cart-item-product" href="@($"news/details/{item.Id}")">
+                                    @foreach (var img in item.NewsImages.Take(1))
+                                    {
+                                        <div class="cart-item-product-thumb"><img src="@img.NewsImageUrl" alt="Product"></div>
+                                    }
+                                    <div class="cart-item-product-info">
+                                        <h4 class="cart-item-product-title">@item.Title</h4>
+                                        <span>Kateqoriya: <span class="text-success font-weight-medium">@item.Category.Name</span></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+    public string USerId { get; set; }
+    public bool IsProcessing { get; set; } = false;
+    public string ActiveSavedNews { get; set; } = "active";
+
+    public UserDTO UserDetails { get; set; } = new UserDTO();
+    public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
+    public SavedNewsDTO SavedNewsDTOs { get; set; } = new SavedNewsDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+        USerId = userInfo.Id;
+
+        IsProcessing = true;
+        UserDetails = await accountService.USerDetails(userInfo.Id);
+        NewsList = await newsService.GetNews();
+        IsProcessing = false;
+    }
+
+
+    private async Task SavedNewsClicked(int newsId)
+    {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            SavedNewsDTOs.UserId = userInfo.Id;
+            SavedNewsDTOs.NewsId = newsId;
+
+
+            await newsService.AddToSavedNews(SavedNewsDTOs);
+
+            await jsRuntime.ToastrSuccess("Silindi");
+
+            IsProcessing = true;
+            UserDetails = await accountService.USerDetails(userInfo.Id);
+            NewsList = await newsService.GetNews();
+            IsProcessing = false;
+
+        }
+    }
+
+}

@@ -149,6 +149,40 @@ namespace Wlog_Api.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(changePasswordDTO.UserName);
+                if (user == null)
+                {
+                    return null;
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user,
+                    changePasswordDTO.CurrentPassword, changePasswordDTO.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    return Unauthorized(new AuthenticationResponseDTO
+                    {
+                        IsAuthSuccessful = false,
+                        ErrorMessage = "Cari parol səhvdir"
+                    });
+                }
+                else
+                {
+                    changePasswordDTO.IsSuccess = true;
+                    return Ok(result);
+                }
+
+            }
+
+            return Ok(404);
+
+        }
 
 
         private SigningCredentials GetSigningCredentials()

@@ -75,6 +75,7 @@ namespace Business.Repository
             }
         }
 
+
         public async Task<NewsDTO> GetNews(int newsId)
         {
             try
@@ -220,5 +221,7 @@ namespace Business.Repository
             }
             
         }
+
+
     }
 }

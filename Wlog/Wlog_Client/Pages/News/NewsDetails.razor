@@ -66,6 +66,11 @@ else
                             <div class="d-flex align-items-center">
                                 <span class="ml-3"><i class="far fa-eye mr-2"></i>@News.ViewCount</span>
                                 <span class="ml-3"><i class="far fa-comment mr-2"></i>@CommentList.Where(x => x.NewsId == News.Id).Count()</span>
+                                <AuthorizeView>
+                                    <Authorized Context="NewsDetails">
+                                        <small class="ml-3" style="cursor: pointer; color: #FFCC00;" @onclick="()=>SavedNewsClicked(Convert.ToInt32(News.Id))"><i class="@(News.SavedNews.Any(s=>s.UserId==USerID)==true?"fas added":"far") fa-bookmark fa-2x blog-bookmarked"></i></small>
+                                    </Authorized>
+                                </AuthorizeView>
                             </div>
                         </div>
                     </div>
@@ -202,6 +207,8 @@ else
     [Parameter]
     public int? Id { get; set; }
 
+    public string USerID { get; set; }
+
     public int? CommentID = null;
     public string CommentUser = null;
 
@@ -220,9 +227,19 @@ else
     public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
     public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
     public NewsCommentDTO Comment { get; set; } = new NewsCommentDTO();
+    public SavedNewsDTO SavedNews { get; set; } = new SavedNewsDTO();
 
     protected override async Task OnInitializedAsync()
     {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            USerID = userInfo.Id;
+        }
+
+
         News = await newsService.GetNewsDetails(Id);
         NewsList = await newsService.GetNews();
         CommentList = await newsCommentService.GetNewsComment();
@@ -252,6 +269,27 @@ else
         CommentUser = null;
 
 
+    }
+
+
+    private async Task SavedNewsClicked(int newsId)
+    {
+        if (await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails) != null)
+        {
+            var userInfo = await localStorage.GetItemAsync<UserDTO>
+                (SD.Local_UserDetails);
+            SavedNews.UserId = userInfo.Id;
+            SavedNews.NewsId = newsId;
+
+
+            await newsService.AddToSavedNews(SavedNews);
+
+            News = await newsService.GetNewsDetails(Id);
+            NewsList = await newsService.GetNews();
+            CommentList = await newsCommentService.GetNewsComment();
+
+        }
     }
 
     private async Task TakeLoadClick()

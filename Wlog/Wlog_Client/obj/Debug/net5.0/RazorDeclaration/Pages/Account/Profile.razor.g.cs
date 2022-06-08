@@ -174,20 +174,36 @@ using Wlog_Client.Pages.News;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 76 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Profile.razor"
+#line 40 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Profile.razor"
        
 
+    [CascadingParameter(Name = "ActiveProfile")]
+    public string ActiveProfile { get; set; }
+
+    [CascadingParameter(Name = "ActiveSavedNews")]
+    public string ActiveSavedNews { get; set; }
+
+    [CascadingParameter]
+    public string ActiveClass { get; set; }
+
     public bool IsProcessing { get; set; } = false;
+    public string USerId { get; set; }
 
     public UserDTO UserDetails { get; set; } = new UserDTO();
+    public UserRoleDTO UserRole { get; set; } = new UserRoleDTO();
+    public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
 
     protected override async Task OnInitializedAsync()
     {
         var userInfo = await localStorage.GetItemAsync<UserDTO>
                 (SD.Local_UserDetails);
+        USerId = userInfo.Id;
 
         IsProcessing = true;
         UserDetails = await accountService.USerDetails(userInfo.Id);
+        UserRole = await accountService.USerRole(userInfo.Id);
+        NewsList = await newsService.GetNews();
+
         IsProcessing = false;
     }
 
@@ -196,6 +212,7 @@ using Wlog_Client.Pages.News;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAccountService accountService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }

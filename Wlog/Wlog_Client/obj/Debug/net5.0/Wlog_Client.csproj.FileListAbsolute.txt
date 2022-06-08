@@ -774,3 +774,7 @@ C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pa
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Account\Profile.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\Account\Edit.razor.g.cs
 C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Account\Edit.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\Account\SavedNews.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Account\SavedNews.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\RazorDeclaration\Pages\Account\ChangePassword.razor.g.cs
+C:\Users\ASUS\source\repos\Wlog\Wlog_Client\obj\Debug\net5.0\Razor\Pages\Account\ChangePassword.razor.g.cs

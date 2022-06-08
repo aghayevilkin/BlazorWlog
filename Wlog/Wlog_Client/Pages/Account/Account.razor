@@ -6,7 +6,7 @@
 
 
 <link href="css/account.css" rel="stylesheet" />
-@if (UserDetails == null || UserRole == null)
+@if (UserDetails == null)
 {
     <div class="loading">
         <div class="fl spinner7 loader-gif"><p style="color: #fff;width: 510px;font-size: 20px;line-height: 1.2em;margin-left: -210px;margin-bottom: 40px;">Loading</p><div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div></div>
@@ -16,43 +16,82 @@ else
 {
     <div class="container padding-bottom-3x mb-2">
         <div class="row">
-            <div class="col-lg-4">
-                <aside class="user-info-wrapper">
-                    <div class="user-cover" style="background-image: url(https://bootdey.com/img/Content/bg1.jpg);">
-                    </div>
-                    <div class="user-info">
-                        <div class="user-avatar">
-                            @if (UserRole.Name == "Admin")
-                            {
-                                <img src="img/verification.png" alt="Verification" class="edit-avatar" />
-                            }
-                            @if (UserDetails.Images != null)
-                            {
-                                <img src="@UserDetails.Images" alt="User">
-                            }
-                            else
-                            {
-                                <img src="img/avatar.png" alt="User">
-                            }
-
-                        </div>
-                        <div class="user-data">
-                            <h4>@UserDetails.Name @UserDetails.Surname </h4>
-                            <span>@UserDetails.Profision</span>
-                        </div>
-                    </div>
-                </aside>
-                <nav class="list-group">
-                    <a class="list-group-item active" href="#"><i class="fa fa-user"></i>Profile</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Addresses</a>
-                    <a class="list-group-item with-badge" href="#"><i class="fa fa-heart"></i>Wishlist<span class="badge badge-primary badge-pill">3</span></a>
-                    <a class="list-group-item with-badge" href="#"><i class="fa fa-tag"></i>My Tickets<span class="badge badge-primary badge-pill">4</span></a>
-                </nav>
-            </div>
+            <CascadingValue Value="ActiveProfile" Name="ActiveProfile">
+                <Profile></Profile>
+            </CascadingValue>
+            
             <div class="col-lg-8">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
                 <!-- Profile-->
-                <Profile></Profile>
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0"> Tam adı</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    @UserDetails.Name @UserDetails.Surname
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">E-poçt</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    @UserDetails.Email
+                                </div>
+                            </div>
+                            <hr>
+                            @if (UserDetails.Profision != null && UserDetails.Profision != "")
+                            {
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Peşə</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @UserDetails.Profision
+                                    </div>
+                                </div>
+                                <hr>
+                            }
+
+                            @if (UserDetails.Adress != null && UserDetails.Adress != "")
+                            {
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Ünvan</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @UserDetails.Adress
+                                    </div>
+                                </div>
+                                <hr>
+                            }
+                            @if (UserDetails.About != null && UserDetails.About != "")
+                            {
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Haqqında</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @UserDetails.About
+                                    </div>
+                                </div>
+                                <hr>
+                            }
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-info" href="@($"account/edit")">Düzəliş et</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="mb-4">
+                </div>
                 
             </div>
         </div>
@@ -63,10 +102,11 @@ else
 
 @code {
 
+    public string ActiveProfile { get; set; } = "active";
+
     public bool IsProcessing { get; set; } = false;
 
     public UserDTO UserDetails { get; set; } = new UserDTO();
-    public UserRoleDTO UserRole { get; set; } = new UserRoleDTO();
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,9 +115,7 @@ else
 
         IsProcessing = true;
         UserDetails = await accountService.USerDetails(userInfo.Id);
-        UserRole = await accountService.USerRole(userInfo.Id);
         IsProcessing = false;
     }
-    
 
 }

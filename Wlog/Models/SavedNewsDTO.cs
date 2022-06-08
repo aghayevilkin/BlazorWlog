@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace Models
         public int Id { get; set; }
         public int NewsId { get; set; }
         public string UserId { get; set; }
+
+        public virtual ICollection<News> News { get; set; }
     }
 }

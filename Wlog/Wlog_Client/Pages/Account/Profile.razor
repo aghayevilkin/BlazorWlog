@@ -2,90 +2,70 @@
 @inject NavigationManager navigationManager
 @inject IJSRuntime jsRuntime
 @inject IAccountService accountService
+@inject INewsService newsService
 
-<div class="col-md-12">
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="mb-0"> Tam adı</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    @UserDetails.Name @UserDetails.Surname
-                </div>
+<div class="col-lg-4">
+    <aside class="user-info-wrapper">
+        <div class="user-cover" style="background-image: url(https://bootdey.com/img/Content/bg1.jpg);">
+        </div>
+        <div class="user-info">
+            <div class="user-avatar">
+                @if (UserRole.Name == "Admin")
+                {
+                    <img src="img/verification.png" alt="Verification" class="edit-avatar" />
+                }
+                @if (UserDetails.Images != null)
+                {
+                    <img src="@UserDetails.Images" alt="User">
+                }
+                else
+                {
+                    <img src="img/avatar.png" alt="User">
+                }
+
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="mb-0">E-poçt</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    @UserDetails.Email
-                </div>
-            </div>
-            <hr>
-            @if (UserDetails.Profision != null && UserDetails.Profision != "")
-            {
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Peşə</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        @UserDetails.Profision
-                    </div>
-                </div>
-                <hr>
-            }
-
-            @if (UserDetails.Adress != null && UserDetails.Adress != "")
-            {
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Ünvan</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        @UserDetails.Adress
-                    </div>
-                </div>
-                <hr>
-            }
-            @if (UserDetails.About != null && UserDetails.About != "")
-            {
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Haqqında</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        @UserDetails.About
-                    </div>
-                </div>
-                <hr>
-            }
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <a class="btn btn-info" href="@($"account/edit")">Düzəliş et</a>
-                </div>
+            <div class="user-data">
+                <h4>@UserDetails.Name @UserDetails.Surname </h4>
+                <span>@UserDetails.Profision</span>
             </div>
         </div>
-    </div>
-
-    <hr class="mb-4">
+    </aside>
+    <nav class="list-group">
+        <a class="list-group-item @ActiveProfile" href="account"><i class="fa fa-user"></i>Profile</a>
+        <a class="list-group-item with-badge @ActiveSavedNews" href="savednews"><i class="fa fa-heart"></i>Saved News</a>
+        <a class="list-group-item with-badge " href="account/changepassword"><i class="fa-solid fa-lock"></i>Parolu dəyişdirin</a>
+    </nav>
 </div>
 
 @code {
 
+    [CascadingParameter(Name = "ActiveProfile")]
+    public string ActiveProfile { get; set; }
+
+    [CascadingParameter(Name = "ActiveSavedNews")]
+    public string ActiveSavedNews { get; set; }
+
+    [CascadingParameter]
+    public string ActiveClass { get; set; }
+
     public bool IsProcessing { get; set; } = false;
+    public string USerId { get; set; }
 
     public UserDTO UserDetails { get; set; } = new UserDTO();
+    public UserRoleDTO UserRole { get; set; } = new UserRoleDTO();
+    public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
 
     protected override async Task OnInitializedAsync()
     {
         var userInfo = await localStorage.GetItemAsync<UserDTO>
                 (SD.Local_UserDetails);
+        USerId = userInfo.Id;
 
         IsProcessing = true;
         UserDetails = await accountService.USerDetails(userInfo.Id);
+        UserRole = await accountService.USerRole(userInfo.Id);
+        NewsList = await newsService.GetNews();
+
         IsProcessing = false;
     }
 

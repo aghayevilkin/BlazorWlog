@@ -81,6 +81,41 @@ namespace Wlog_Client.Service
             }
         }
 
+        //public async Task<AuthenticationResponseDTO> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        //{
+        //    var content = JsonConvert.SerializeObject(changePasswordDTO);
+        //    var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+        //    var response = await _client.PostAsync("api/account/ChangePassword", bodyContent);
+        //    var contentTemp = await response.Content.ReadAsStringAsync();
+        //    var result = JsonConvert.DeserializeObject<AuthenticationResponseDTO>(contentTemp);
+        //    if (response.IsSuccessStatusCode)
+        //    {
+                
+        //        return new AuthenticationResponseDTO { IsAuthSuccessful = true };
+        //    }
+        //    else
+        //    {
+        //        return result;
+        //    }
+        //}
+        
+        
+        public async Task<AuthenticationResponseDTO> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        {
+            var content = JsonConvert.SerializeObject(changePasswordDTO);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/account/ChangePassword", bodyContent);
+            var contentTemp = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<AuthenticationResponseDTO>(contentTemp);
 
+            if (response.IsSuccessStatusCode)
+            {
+                return new AuthenticationResponseDTO { IsAuthSuccessful = true };
+            }
+            else
+            {
+                return result;
+            }
+        }
     }
 }

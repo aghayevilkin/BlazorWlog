@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace Wlog_Client.Pages.News
+namespace Wlog_Client.Pages.Account
 {
     #line hidden
     using System;
@@ -166,15 +166,8 @@ using Wlog_Client.Pages.News;
 #line default
 #line hidden
 #nullable disable
-#nullable restore
-#line 9 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
-using System.Threading;
-
-#line default
-#line hidden
-#nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/news/details/{Id:int}")]
-    public partial class NewsDetails : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/savednews")]
+    public partial class SavedNews : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -182,73 +175,26 @@ using System.Threading;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 206 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\News\NewsDetails.razor"
+#line 56 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\SavedNews.razor"
        
-    [Parameter]
-    public int? Id { get; set; }
+    public string USerId { get; set; }
+    public bool IsProcessing { get; set; } = false;
+    public string ActiveSavedNews { get; set; } = "active";
 
-    public string USerID { get; set; }
-
-    public int? CommentID = null;
-    public string CommentUser = null;
-
-    public int TakeLoad { get; set; } = 2;
-    public string Loadingmore { get; set; } = "";
-    public string LoadText { get; set; } = "Daha çox yüklə";
-    public bool IsLoading { get; set; } = false;
-
-    private bool arrows = true;
-    private bool bullets = true;
-    private bool autocycle = true;
-    private Transition transition = Transition.Slide;
-
-
-    public NewsDTO News { get; set; } = new NewsDTO();
+    public UserDTO UserDetails { get; set; } = new UserDTO();
     public IEnumerable<NewsDTO> NewsList { get; set; } = new List<NewsDTO>();
-    public IEnumerable<NewsCommentDTO> CommentList { get; set; } = new List<NewsCommentDTO>();
-    public NewsCommentDTO Comment { get; set; } = new NewsCommentDTO();
-    public SavedNewsDTO SavedNews { get; set; } = new SavedNewsDTO();
+    public SavedNewsDTO SavedNewsDTOs { get; set; } = new SavedNewsDTO();
 
     protected override async Task OnInitializedAsync()
     {
-        if (await localStorage.GetItemAsync<UserDTO>
-                (SD.Local_UserDetails) != null)
-        {
-            var userInfo = await localStorage.GetItemAsync<UserDTO>
+        var userInfo = await localStorage.GetItemAsync<UserDTO>
                 (SD.Local_UserDetails);
-            USerID = userInfo.Id;
-        }
+        USerId = userInfo.Id;
 
-
-        News = await newsService.GetNewsDetails(Id);
+        IsProcessing = true;
+        UserDetails = await accountService.USerDetails(userInfo.Id);
         NewsList = await newsService.GetNews();
-        CommentList = await newsCommentService.GetNewsComment();
-
-    }
-
-
-
-    private async Task HandleComment()
-    {
-        if (await localStorage.GetItemAsync<UserDTO>
-                (SD.Local_UserDetails) != null)
-        {
-            var userInfo = await localStorage.GetItemAsync<UserDTO>
-                (SD.Local_UserDetails);
-            Comment.UserId = userInfo.Id;
-        }
-        Comment.NewsId = News.Id;
-        Comment.CommentId = CommentID;
-        await newsCommentService.CreateNewsComment(Comment);
-
-        await jsRuntime.ToastrSuccess("Create Comment");
-
-        CommentList = await newsCommentService.GetNewsComment();
-        Comment.Message = null;
-        CommentID = null;
-        CommentUser = null;
-
-
+        IsProcessing = false;
     }
 
 
@@ -259,53 +205,31 @@ using System.Threading;
         {
             var userInfo = await localStorage.GetItemAsync<UserDTO>
                 (SD.Local_UserDetails);
-            SavedNews.UserId = userInfo.Id;
-            SavedNews.NewsId = newsId;
+            SavedNewsDTOs.UserId = userInfo.Id;
+            SavedNewsDTOs.NewsId = newsId;
 
 
-            await newsService.AddToSavedNews(SavedNews);
+            await newsService.AddToSavedNews(SavedNewsDTOs);
 
-            News = await newsService.GetNewsDetails(Id);
+            await jsRuntime.ToastrSuccess("Silindi");
+
+            IsProcessing = true;
+            UserDetails = await accountService.USerDetails(userInfo.Id);
             NewsList = await newsService.GetNews();
-            CommentList = await newsCommentService.GetNewsComment();
+            IsProcessing = false;
 
         }
-    }
-
-    private async Task TakeLoadClick()
-    {
-        LoadText = "";
-        IsLoading = true;
-        await Task.Delay(1000);
-        TakeLoad = TakeLoad + 2;
-        IsLoading = false;
-        LoadText = "Daha çox yüklə";
-    }
-
-
-    void ReplyClicked(int commentID, string commentUser)
-    {
-        CommentID = commentID;
-        CommentUser = commentUser;
-    }
-
-    void dontReplyClick()
-    {
-        CommentID = null;
-        CommentUser = null;
     }
 
 
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDialogService dialogService { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsCommentService newsCommentService { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ISubscribeService subscribeService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private INewsService newsService { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILocalStorageService localStorage { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAccountService accountService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ILocalStorageService localStorage { get; set; }
     }
 }
 #pragma warning restore 1591

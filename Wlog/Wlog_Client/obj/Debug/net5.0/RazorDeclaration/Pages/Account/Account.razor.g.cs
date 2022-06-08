@@ -175,13 +175,14 @@ using Wlog_Client.Pages.News;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 64 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Account.razor"
+#line 103 "C:\Users\ASUS\source\repos\Wlog\Wlog_Client\Pages\Account\Account.razor"
        
+
+    public string ActiveProfile { get; set; } = "active";
 
     public bool IsProcessing { get; set; } = false;
 
     public UserDTO UserDetails { get; set; } = new UserDTO();
-    public UserRoleDTO UserRole { get; set; } = new UserRoleDTO();
 
     protected override async Task OnInitializedAsync()
     {
@@ -190,10 +191,8 @@ using Wlog_Client.Pages.News;
 
         IsProcessing = true;
         UserDetails = await accountService.USerDetails(userInfo.Id);
-        UserRole = await accountService.USerRole(userInfo.Id);
         IsProcessing = false;
     }
-    
 
 
 #line default
